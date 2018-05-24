@@ -17,7 +17,8 @@
 #define HIGH_PRIO 3
 
 
-/*****************************   Constants   *******************************/
+/*************************   Queue declarations   **************************/
+xQueueHandle xQueueButton;
 
 /*****************************   Variables   *******************************/
 
@@ -47,7 +48,6 @@ static void setupHardware(void)
   init_systick();
 }
 
-xQueueHandle xQueueButton;
 
 int main(void)
 /*****************************************************************************
