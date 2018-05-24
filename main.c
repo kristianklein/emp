@@ -28,6 +28,7 @@
 #include "queue.h"
 #include "button.h"
 #include "button_task.h"
+#include "lcd_task.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -70,6 +71,12 @@ static void setupHardware(void)
 {
   // TODO: Put hardware configuration and initialisation in here
 
+     SYSCTL_RCGC2_R |= 0x20;
+     GPIO_PORTF_DIR_R = 0x0E;
+     GPIO_PORTF_DEN_R = 0x1E;
+     GPIO_PORTF_PUR_R = 0x10;
+     GPIO_PORTF_DATA_R &= ~0xE;
+
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
 }
@@ -93,6 +100,7 @@ int main(void)
   xTaskCreate(button1_task, "Button1 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(keypad_task, "Keypad_task_name", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
 
   // Start the scheduler.
