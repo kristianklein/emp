@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32
+CG_TOOL_ROOT := C:/ti/ccsv7/tools/compiler/gcc-arm-none-eabi-6-2017-q1-update
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -22,6 +22,9 @@ ORDERED_OBJS += \
 "./FRT_Library/FreeRTOS/Source/portable/MemMang/heap_2.o" \
 -Wl,-T"../tm4c123gh6pm.lds" \
 $(GEN_CMDS__FLAG) \
+-Wl,--start-group \
+-lc \
+-Wl,--end-group \
 
 -include ../makefile.init
 
@@ -154,14 +157,14 @@ all: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 final_assignment.out: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: GNU Linker'
-	"D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32/bin/arm-none-eabi-gcc.exe" -DPART_TM4C123GH6PM -ffunction-sections -fdata-sections -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,"final_assignment.map" -o"final_assignment.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv7/tools/compiler/gcc-arm-none-eabi-6-2017-q1-update/bin/arm-none-eabi-gcc.exe" -DPART_TM4C123GH6PM -ffunction-sections -fdata-sections -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,"final_assignment.map" -o"final_assignment.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 final_assignment.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: GNU Objcopy Utility'
-	"D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32/bin/arm-none-eabi-objcopy.exe"  $(EXE_OUTPUTS__QUOTED) "final_assignment.hex"
+	"C:/ti/ccsv7/tools/compiler/gcc-arm-none-eabi-6-2017-q1-update/bin/arm-none-eabi-objcopy.exe"  $(EXE_OUTPUTS__QUOTED) "final_assignment.hex"
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 

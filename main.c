@@ -24,6 +24,7 @@
 #include "systick_frt.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
