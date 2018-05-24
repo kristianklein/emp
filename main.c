@@ -30,6 +30,7 @@
 #include "taskmodel.h"
 #include "rgb.h"
 #include "uart0.h"
+#include "file.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -47,6 +48,7 @@ xQueueHandle xQueueKeypad;
 xQueueHandle xQueueButton;
 xQueueHandle xQueueUART_TX;
 xQueueHandle xQueueUART_RX;
+xQueueHandle xQueueLCD;
 
 /*****************************   Variables   *******************************/
 
@@ -73,6 +75,7 @@ static void setupHardware(void)
   // TODO: Put hardware configuration and initialisation in here
   rgb_init(); // Initialize RGB LED on the Tiva board
   uart0_init(9600, 8, 1, 0); // Initialize UART0
+  file_init(); // Initialize files, to easily interact with UART0, LCD, Keypad and Buttons
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
@@ -93,6 +96,7 @@ int main(void)
   xQueueButton = xQueueCreate(16, sizeof(INT8U));
   xQueueUART_TX = xQueueCreate(128, sizeof(INT8U));
   xQueueUART_RX = xQueueCreate(128, sizeof(INT8U));
+  xQueueLCD = xQueueCreate(128, sizeof(INT8U));
 
   // Start the tasks.
   // ----------------

@@ -21,9 +21,12 @@ ORDERED_OBJS += \
 "./FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.o" \
 "./FRT_Library/FreeRTOS/Source/portable/MemMang/heap_2.o" \
 "./include/button.o" \
+"./include/file.o" \
+"./include/file_func.o" \
 "./include/keypad.o" \
 "./include/rgb.o" \
 "./include/rtc.o" \
+"./include/string.o" \
 "./include/uart0.o" \
 "./tasks/button_task.o" \
 "./tasks/keypad_task.o" \
@@ -167,7 +170,7 @@ all: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 final_assignment.out: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: GNU Linker'
-	"D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32/bin/arm-none-eabi-gcc.exe" -DPART_TM4C123GH6PM -ffunction-sections -fdata-sections -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,"final_assignment.map" -o"final_assignment.out" $(ORDERED_OBJS)
+	"D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32/bin/arm-none-eabi-gcc.exe" -DPART_TM4C123GH6PM -ffunction-sections -fdata-sections -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,"final_assignment.map" --entry ResetISR -o"final_assignment.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
@@ -181,8 +184,8 @@ final_assignment.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library\FreeRTOS\Source\croutine.o" "FRT_Library\FreeRTOS\Source\list.o" "FRT_Library\FreeRTOS\Source\queue.o" "FRT_Library\FreeRTOS\Source\tasks.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.o" "include\button.o" "include\keypad.o" "include\rgb.o" "include\rtc.o" "include\uart0.o" "tasks\button_task.o" "tasks\keypad_task.o" "tasks\rtc_task.o" "tasks\uart_task.o" 
-	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library\FreeRTOS\Source\croutine.d" "FRT_Library\FreeRTOS\Source\list.d" "FRT_Library\FreeRTOS\Source\queue.d" "FRT_Library\FreeRTOS\Source\tasks.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.d" "include\button.d" "include\keypad.d" "include\rgb.d" "include\rtc.d" "include\uart0.d" "tasks\button_task.d" "tasks\keypad_task.d" "tasks\rtc_task.d" "tasks\uart_task.d" 
+	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library\FreeRTOS\Source\croutine.o" "FRT_Library\FreeRTOS\Source\list.o" "FRT_Library\FreeRTOS\Source\queue.o" "FRT_Library\FreeRTOS\Source\tasks.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.o" "include\button.o" "include\file.o" "include\file_func.o" "include\keypad.o" "include\rgb.o" "include\rtc.o" "include\string.o" "include\uart0.o" "tasks\button_task.o" "tasks\keypad_task.o" "tasks\rtc_task.o" "tasks\uart_task.o" 
+	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library\FreeRTOS\Source\croutine.d" "FRT_Library\FreeRTOS\Source\list.d" "FRT_Library\FreeRTOS\Source\queue.d" "FRT_Library\FreeRTOS\Source\tasks.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.d" "include\button.d" "include\file.d" "include\file_func.d" "include\keypad.d" "include\rgb.d" "include\rtc.d" "include\string.d" "include\uart0.d" "tasks\button_task.d" "tasks\keypad_task.d" "tasks\rtc_task.d" "tasks\uart_task.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
