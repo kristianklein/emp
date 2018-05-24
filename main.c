@@ -24,12 +24,10 @@
 #include "systick_frt.h"
 #include "FreeRTOS.h"
 #include "task.h"
-#include "keypad_task.h"
 #include "queue.h"
 #include "button.h"
-#include "button_task.h"
 #include "rtc.h"
-#include "rtc_task.h"
+#include "taskmodel.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
