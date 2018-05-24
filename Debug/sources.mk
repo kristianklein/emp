@@ -117,8 +117,4 @@ FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4 \
 FRT_Library/FreeRTOS/Source/portable/MemMang \
 include \
 tasks \
-<<<<<<< HEAD
 
-=======
-
->>>>>>> button
