@@ -34,6 +34,7 @@
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
+#define ALTERNATE_STACK_SIZE 512
 #define IDLE_PRIO 0
 #define LOW_PRIO  1
 #define MED_PRIO  2
@@ -103,7 +104,7 @@ int main(void)
   xTaskCreate(button1_task, "Button1 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(keypad_task, "Keypad_task_name", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(rtc_task, "RTC task", ALTERNATE_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_rx_task, "UART RX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_tx_task, "UART TX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
