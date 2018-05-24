@@ -28,6 +28,7 @@
 #include "button.h"
 #include "rtc.h"
 #include "taskmodel.h"
+#include "rgb.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -67,6 +68,7 @@ static void setupHardware(void)
 *****************************************************************************/
 {
   // TODO: Put hardware configuration and initialisation in here
+  rgb_init(); // Initialize RGB LED on the Tiva board
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
