@@ -1,22 +1,3 @@
-/*****************************************************************************
-* University of Southern Denmark
-* Embedded Programming (EMP)
-*
-* MODULENAME.: main.c
-*
-* PROJECT....: EMP
-*
-* DESCRIPTION: Assignment 2, main module. No main.h file.
-*
-* Change Log:
-*****************************************************************************
-* Date    Id    Change
-* YYMMDD
-* --------------------
-* 150215  MoH   Module created.
-*
-*****************************************************************************/
-
 /***************************** Include files *******************************/
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
@@ -24,6 +5,7 @@
 #include "systick_frt.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "queue.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -73,6 +55,10 @@ int main(void)
 ******************************************************************************/
 {
   setupHardware();
+
+
+  // Queues
+  xQueueButton = xQueueCreate(16, sizeof(INT8U));
 
   // Start the tasks.
   // ----------------
