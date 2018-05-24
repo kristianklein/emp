@@ -7,6 +7,7 @@
 #include "task.h"
 #include "queue.h"
 #include "button.h"
+#include "button_task.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -64,6 +65,12 @@ int main(void)
 
   // Start the tasks.
   // ----------------
+  xTaskCreate( button_task, /* Pointer to the function that implements the task. */
+              "Button task",/* Text name for the task. This is to facilitate debugging only. */
+              USERTASK_STACK_SIZE, /* Stack depth - small microcontrollers will use much less stack than this. */
+              NULL, /* This example does not use the task parameter. */
+               1, /* This task will run at priority 1. */
+              NULL ); /* This example does not use the task handle. */
 
   // Start the scheduler.
   // --------------------

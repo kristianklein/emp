@@ -4,6 +4,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-void ATaskFunction(void *pvParameters);
+void button_task(void *pvParameters);
 
 #endif /* TASKS_BUTTON_TASK_H_ */
