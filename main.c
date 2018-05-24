@@ -28,6 +28,8 @@
 #include "queue.h"
 #include "button.h"
 #include "button_task.h"
+#include "rtc.h"
+#include "rtc_task.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -36,7 +38,6 @@
 #define MED_PRIO  2
 #define HIGH_PRIO 3
 
-
 //User defines
 #define KEYPAD_Q_SIZE 10
 
@@ -44,7 +45,6 @@
 /*****************************   Queue Declarations   *******************************/
 xQueueHandle xQueueKeypad;
 xQueueHandle xQueueButton;
-
 
 /*****************************   Variables   *******************************/
 
@@ -86,13 +86,14 @@ int main(void)
 
   // Open the Q's.
   xQueueKeypad = xQueueCreate(KEYPAD_Q_SIZE,sizeof(INT8U));
-   xQueueButton = xQueueCreate(16, sizeof(INT8U));
+  xQueueButton = xQueueCreate(16, sizeof(INT8U));
 
   // Start the tasks.
   // ----------------
   xTaskCreate(button1_task, "Button1 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(keypad_task, "Keypad_task_name", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
 
   // Start the scheduler.

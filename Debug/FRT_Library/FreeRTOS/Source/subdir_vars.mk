@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
+SHELL = cmd.exe
+
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../FRT_Library/FreeRTOS/Source/croutine.c \
@@ -22,16 +24,16 @@ OBJS += \
 ./FRT_Library/FreeRTOS/Source/tasks.o 
 
 OBJS__QUOTED += \
-"FRT_Library/FreeRTOS/Source/croutine.o" \
-"FRT_Library/FreeRTOS/Source/list.o" \
-"FRT_Library/FreeRTOS/Source/queue.o" \
-"FRT_Library/FreeRTOS/Source/tasks.o" 
+"FRT_Library\FreeRTOS\Source\croutine.o" \
+"FRT_Library\FreeRTOS\Source\list.o" \
+"FRT_Library\FreeRTOS\Source\queue.o" \
+"FRT_Library\FreeRTOS\Source\tasks.o" 
 
 C_DEPS__QUOTED += \
-"FRT_Library/FreeRTOS/Source/croutine.d" \
-"FRT_Library/FreeRTOS/Source/list.d" \
-"FRT_Library/FreeRTOS/Source/queue.d" \
-"FRT_Library/FreeRTOS/Source/tasks.d" 
+"FRT_Library\FreeRTOS\Source\croutine.d" \
+"FRT_Library\FreeRTOS\Source\list.d" \
+"FRT_Library\FreeRTOS\Source\queue.d" \
+"FRT_Library\FreeRTOS\Source\tasks.d" 
 
 C_SRCS__QUOTED += \
 "../FRT_Library/FreeRTOS/Source/croutine.c" \
