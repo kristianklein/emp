@@ -5,10 +5,6 @@
 
 #define TICKS_PER_SEC 200
 
-//DEBUGGING
-#include "string.h"
-//DEBUGGING
-
 void rtc_task(void *pvParameters)
 {
     BOOLEAN led_on = 0;
@@ -21,11 +17,6 @@ void rtc_task(void *pvParameters)
         // Toggle LED
         led_on ^= 1;
         rgb_set(led_on, 0, 0);
-
-        //DEBUGGING
-        gfprintf(UART0, "Hello");
-        //DEBUGGING
-
 
         vTaskDelay((portTickType)TICKS_PER_SEC);
     }
