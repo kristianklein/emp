@@ -23,6 +23,7 @@
  * KEYB_K (PE3) = Y1
  */
  
+
 void keypad_init(void)
 {
 	// Enable clocks for PORTA and PORTE

@@ -20,6 +20,8 @@ ORDERED_OBJS += \
 "./FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.o" \
 "./FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.o" \
 "./FRT_Library/FreeRTOS/Source/portable/MemMang/heap_2.o" \
+"./include/keypad.o" \
+"./tasks/keypad_task.o" \
 -Wl,-T"../tm4c123gh6pm.lds" \
 $(GEN_CMDS__FLAG) \
 -Wl,--start-group \
@@ -37,10 +39,14 @@ RMDIR := RMDIR /S/Q
 -include FRT_Library/FreeRTOS/Source/subdir_vars.mk
 -include FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/subdir_vars.mk
 -include FRT_Library/FreeRTOS/Source/portable/MemMang/subdir_vars.mk
+-include include/subdir_vars.mk
+-include tasks/subdir_vars.mk
 -include subdir_rules.mk
 -include FRT_Library/FreeRTOS/Source/subdir_rules.mk
 -include FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/subdir_rules.mk
 -include FRT_Library/FreeRTOS/Source/portable/MemMang/subdir_rules.mk
+-include include/subdir_rules.mk
+-include tasks/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -171,8 +177,8 @@ final_assignment.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library\FreeRTOS\Source\croutine.o" "FRT_Library\FreeRTOS\Source\list.o" "FRT_Library\FreeRTOS\Source\queue.o" "FRT_Library\FreeRTOS\Source\tasks.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.o" 
-	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library\FreeRTOS\Source\croutine.d" "FRT_Library\FreeRTOS\Source\list.d" "FRT_Library\FreeRTOS\Source\queue.d" "FRT_Library\FreeRTOS\Source\tasks.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.d" 
+	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library\FreeRTOS\Source\croutine.o" "FRT_Library\FreeRTOS\Source\list.o" "FRT_Library\FreeRTOS\Source\queue.o" "FRT_Library\FreeRTOS\Source\tasks.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.o" "include\keypad.o" "tasks\keypad_task.o" 
+	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library\FreeRTOS\Source\croutine.d" "FRT_Library\FreeRTOS\Source\list.d" "FRT_Library\FreeRTOS\Source\queue.d" "FRT_Library\FreeRTOS\Source\tasks.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.d" "include\keypad.d" "tasks\keypad_task.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
