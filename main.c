@@ -29,6 +29,7 @@
 #include "rtc.h"
 #include "taskmodel.h"
 #include "rgb.h"
+#include "uart0.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -71,6 +72,7 @@ static void setupHardware(void)
 {
   // TODO: Put hardware configuration and initialisation in here
   rgb_init(); // Initialize RGB LED on the Tiva board
+  uart0_init(9600, 8, 1, 0); // Initialize UART0
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
@@ -98,6 +100,8 @@ int main(void)
   xTaskCreate(button2_task, "Button2 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(keypad_task, "Keypad_task_name", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(uart_rx_task, "UART RX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(uart_tx_task, "UART TX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
 
   // Start the scheduler.

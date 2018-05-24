@@ -5,5 +5,6 @@
 #include "button_task.h"
 #include "keypad_task.h"
 #include "rtc_task.h"
+#include "uart_task.h"
 
 #endif
