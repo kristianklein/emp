@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ################################################################################
 # Automatically-generated file. Do not edit!
 ################################################################################
@@ -5,6 +6,13 @@
 SHELL = cmd.exe
 
 # Add inputs and outputs from these tool invocations to the build variables 
+=======
+################################################################################
+# Automatically-generated file. Do not edit!
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+>>>>>>> button
 C_SRCS += \
 ../FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.c \
 ../FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.c 
@@ -18,6 +26,7 @@ OBJS += \
 ./FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.o 
 
 OBJS__QUOTED += \
+<<<<<<< HEAD
 "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" \
 "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" 
 
@@ -25,6 +34,15 @@ C_DEPS__QUOTED += \
 "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" \
 "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" 
 
+=======
+"FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.o" \
+"FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.o" 
+
+C_DEPS__QUOTED += \
+"FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.d" \
+"FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.d" 
+
+>>>>>>> button
 C_SRCS__QUOTED += \
 "../FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.c" \
 "../FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.c" 

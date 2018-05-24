@@ -26,6 +26,8 @@
 #include "task.h"
 #include "keypad_task.h"
 #include "queue.h"
+#include "button.h"
+#include "button_task.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -41,6 +43,7 @@
 
 /*****************************   Queue Declarations   *******************************/
 xQueueHandle xQueueKeypad;
+xQueueHandle xQueueButton;
 
 
 /*****************************   Variables   *******************************/
@@ -83,17 +86,13 @@ int main(void)
 
   // Open the Q's.
   xQueueKeypad = xQueueCreate(KEYPAD_Q_SIZE,sizeof(INT8U));
-
+   xQueueButton = xQueueCreate(16, sizeof(INT8U));
 
   // Start the tasks.
   // ----------------
-  xTaskCreate(keypad_task,          //Task function pointer
-              "Keypad_task_name",   //Task name
-              USERTASK_STACK_SIZE,  //Stack size
-              NULL,                 //Input parameter
-              1,                    //Priority
-              NULL);                //Task Handle
-
+  xTaskCreate(button1_task, "Button1 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(button2_task, "Button2 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(keypad_task, "Keypad_task_name", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
 
   // Start the scheduler.
