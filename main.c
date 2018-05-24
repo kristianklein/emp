@@ -67,22 +67,6 @@ static void setupHardware(void)
 {
   // TODO: Put hardware configuration and initialisation in here
 
-    //Switch: GIPO Port F bit 4 - base: 0x4002-500
-    //LED's: GIPO Port F bit 1-3 - base: 0x4002-500
-
-    //Enalble the GPIO port
-    SYSCTL_RCGC2_R = SYSCTL_RCGC2_GPIOF;
-
-    //Set the direction (0=input and 1=output)
-    GPIO_PORTF_DIR_R = 0x0E;        //Switch 1 (bit 4) to 0 and LED (bit 1-3) to 1
-
-    //Enable the GPIO pins
-    GPIO_PORTF_DEN_R = 0x1E;
-
-    //Enable internal pull-up
-    GPIO_PORTF_PUR_R = 0x10;
-
-
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
 }
