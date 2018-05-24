@@ -23,7 +23,6 @@
 #include "emp_type.h"
 #include "systick_frt.h"
 #include "FreeRTOS.h"
-#include "task.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
