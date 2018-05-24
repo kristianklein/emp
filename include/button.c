@@ -1,8 +1,5 @@
 #include "button.h"
 #include "tm4c123gh6pm.h"
-#include "swtimer.h"
-#include "messages.h"
-#include "taskmodel.h"
 
 #define SW1 1
 #define SW2 2

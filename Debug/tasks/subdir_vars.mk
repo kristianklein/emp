@@ -3,37 +3,22 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
-LDS_SRCS += \
-../tm4c123gh6pm.lds 
-
 C_SRCS += \
-../main.c \
-../startup_frt.c \
-../systick_frt.c 
+../tasks/button_task.c 
 
 C_DEPS += \
-./main.d \
-./startup_frt.d \
-./systick_frt.d 
+./tasks/button_task.d 
 
 OBJS += \
-./main.o \
-./startup_frt.o \
-./systick_frt.o 
+./tasks/button_task.o 
 
 OBJS__QUOTED += \
-"main.o" \
-"startup_frt.o" \
-"systick_frt.o" 
+"tasks/button_task.o" 
 
 C_DEPS__QUOTED += \
-"main.d" \
-"startup_frt.d" \
-"systick_frt.d" 
+"tasks/button_task.d" 
 
 C_SRCS__QUOTED += \
-"../main.c" \
-"../startup_frt.c" \
-"../systick_frt.c" 
+"../tasks/button_task.c" 
 
 

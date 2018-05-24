@@ -2,9 +2,7 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-SHELL = cmd.exe
-
-CG_TOOL_ROOT := D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32
+CG_TOOL_ROOT := /home/klein/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -20,13 +18,15 @@ ORDERED_OBJS += \
 "./FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.o" \
 "./FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.o" \
 "./FRT_Library/FreeRTOS/Source/portable/MemMang/heap_2.o" \
+"./include/button.o" \
+"./tasks/button_task.o" \
 -Wl,-T"../tm4c123gh6pm.lds" \
 $(GEN_CMDS__FLAG) \
 
 -include ../makefile.init
 
-RM := DEL /F
-RMDIR := RMDIR /S/Q
+RM := rm -rf
+RMDIR := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -34,10 +34,14 @@ RMDIR := RMDIR /S/Q
 -include FRT_Library/FreeRTOS/Source/subdir_vars.mk
 -include FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/subdir_vars.mk
 -include FRT_Library/FreeRTOS/Source/portable/MemMang/subdir_vars.mk
+-include include/subdir_vars.mk
+-include tasks/subdir_vars.mk
 -include subdir_rules.mk
 -include FRT_Library/FreeRTOS/Source/subdir_rules.mk
 -include FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/subdir_rules.mk
 -include FRT_Library/FreeRTOS/Source/portable/MemMang/subdir_rules.mk
+-include include/subdir_rules.mk
+-include tasks/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -154,22 +158,22 @@ all: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 final_assignment.out: $(OBJS) $(LDS_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: GNU Linker'
-	"D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32/bin/arm-none-eabi-gcc.exe" -DPART_TM4C123GH6PM -ffunction-sections -fdata-sections -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,"final_assignment.map" -o"final_assignment.out" $(ORDERED_OBJS)
+	"/home/klein/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-gcc" -DPART_TM4C123GH6PM -ffunction-sections -fdata-sections -g -gdwarf-3 -gstrict-dwarf -Wall -specs="nosys.specs" -march=armv7e-m -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Wl,-Map,"final_assignment.map" -o"final_assignment.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 final_assignment.hex: $(EXE_OUTPUTS)
 	@echo 'Building files: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo 'Invoking: GNU Objcopy Utility'
-	"D:/Windows Application Programs/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major-win32/bin/arm-none-eabi-objcopy.exe"  $(EXE_OUTPUTS__QUOTED) "final_assignment.hex"
+	"/home/klein/ti/ccsv8/tools/compiler/gcc-arm-none-eabi-7-2017-q4-major/bin/arm-none-eabi-objcopy"  $(EXE_OUTPUTS__QUOTED) "final_assignment.hex"
 	@echo 'Finished building: $(strip $(EXE_OUTPUTS__QUOTED))'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library\FreeRTOS\Source\croutine.o" "FRT_Library\FreeRTOS\Source\list.o" "FRT_Library\FreeRTOS\Source\queue.o" "FRT_Library\FreeRTOS\Source\tasks.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.o" 
-	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library\FreeRTOS\Source\croutine.d" "FRT_Library\FreeRTOS\Source\list.d" "FRT_Library\FreeRTOS\Source\queue.d" "FRT_Library\FreeRTOS\Source\tasks.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.d" 
+	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library/FreeRTOS/Source/croutine.o" "FRT_Library/FreeRTOS/Source/list.o" "FRT_Library/FreeRTOS/Source/queue.o" "FRT_Library/FreeRTOS/Source/tasks.o" "FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.o" "FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.o" "FRT_Library/FreeRTOS/Source/portable/MemMang/heap_2.o" "include/button.o" "tasks/button_task.o" 
+	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library/FreeRTOS/Source/croutine.d" "FRT_Library/FreeRTOS/Source/list.d" "FRT_Library/FreeRTOS/Source/queue.d" "FRT_Library/FreeRTOS/Source/tasks.d" "FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/common.d" "FRT_Library/FreeRTOS/Source/portable/GCC/ARM_CM4/port.d" "FRT_Library/FreeRTOS/Source/portable/MemMang/heap_2.d" "include/button.d" "tasks/button_task.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

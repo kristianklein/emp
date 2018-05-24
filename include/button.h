@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "emp_type.h"
 
-boid button_init(void);
+void button_init(void);
 BOOLEAN button_active(INT8U button_number);
 
 #endif

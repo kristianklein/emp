@@ -6,6 +6,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "button.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -40,6 +41,7 @@ static void setupHardware(void)
 *****************************************************************************/
 {
   // TODO: Put hardware configuration and initialisation in here
+  button_init();
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
@@ -58,7 +60,7 @@ int main(void)
 
 
   // Queues
-  xQueueButton = xQueueCreate(16, sizeof(INT8U));
+  xQueueHandle xQueueButton = xQueueCreate(16, sizeof(INT8U));
 
   // Start the tasks.
   // ----------------
