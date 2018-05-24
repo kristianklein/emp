@@ -4,6 +4,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-void button_task(void *pvParameters);
+void button1_task(void *pvParameters);
+void button2_task(void *pvParameters);
 
 #endif /* TASKS_BUTTON_TASK_H_ */

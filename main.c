@@ -42,13 +42,12 @@ static void setupHardware(void)
 *****************************************************************************/
 {
   // TODO: Put hardware configuration and initialisation in here
-  button_init();
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
 }
 
-
+xQueueHandle xQueueButton;
 
 int main(void)
 /*****************************************************************************
@@ -59,18 +58,13 @@ int main(void)
 {
   setupHardware();
 
-
   // Queues
-  xQueueHandle xQueueButton = xQueueCreate(16, sizeof(INT8U));
+  xQueueButton = xQueueCreate(16, sizeof(INT8U));
 
   // Start the tasks.
   // ----------------
-  xTaskCreate( button_task, /* Pointer to the function that implements the task. */
-              "Button task",/* Text name for the task. This is to facilitate debugging only. */
-              USERTASK_STACK_SIZE, /* Stack depth - small microcontrollers will use much less stack than this. */
-              NULL, /* This example does not use the task parameter. */
-               1, /* This task will run at priority 1. */
-              NULL ); /* This example does not use the task handle. */
+  xTaskCreate(button1_task, "Button1 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(button2_task, "Button2 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
   // Start the scheduler.
   // --------------------

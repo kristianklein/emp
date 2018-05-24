@@ -1,9 +1,6 @@
 #include "button.h"
 #include "tm4c123gh6pm.h"
 
-#define SW1 1
-#define SW2 2
-
 void button_init(void)
 {
     // Setup buttons on Tiva
