@@ -44,6 +44,8 @@
 /*****************************   Queue Declarations   *******************************/
 xQueueHandle xQueueKeypad;
 xQueueHandle xQueueButton;
+xQueueHandle xQueueUART_TX;
+xQueueHandle xQueueUART_RX;
 
 /*****************************   Variables   *******************************/
 
@@ -87,6 +89,8 @@ int main(void)
   // Open the Q's.
   xQueueKeypad = xQueueCreate(KEYPAD_Q_SIZE,sizeof(INT8U));
   xQueueButton = xQueueCreate(16, sizeof(INT8U));
+  xQueueUART_TX = xQueueCreate(128, sizeof(INT8U));
+  xQueueUART_RX = xQueueCreate(128, sizeof(INT8U));
 
   // Start the tasks.
   // ----------------

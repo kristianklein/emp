@@ -24,6 +24,7 @@ ORDERED_OBJS += \
 "./include/keypad.o" \
 "./include/rgb.o" \
 "./include/rtc.o" \
+"./include/uart0.o" \
 "./tasks/button_task.o" \
 "./tasks/keypad_task.o" \
 "./tasks/rtc_task.o" \
@@ -179,8 +180,8 @@ final_assignment.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library\FreeRTOS\Source\croutine.o" "FRT_Library\FreeRTOS\Source\list.o" "FRT_Library\FreeRTOS\Source\queue.o" "FRT_Library\FreeRTOS\Source\tasks.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.o" "include\button.o" "include\keypad.o" "include\rgb.o" "include\rtc.o" "tasks\button_task.o" "tasks\keypad_task.o" "tasks\rtc_task.o" 
-	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library\FreeRTOS\Source\croutine.d" "FRT_Library\FreeRTOS\Source\list.d" "FRT_Library\FreeRTOS\Source\queue.d" "FRT_Library\FreeRTOS\Source\tasks.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.d" "include\button.d" "include\keypad.d" "include\rgb.d" "include\rtc.d" "tasks\button_task.d" "tasks\keypad_task.d" "tasks\rtc_task.d" 
+	-$(RM) "main.o" "startup_frt.o" "systick_frt.o" "FRT_Library\FreeRTOS\Source\croutine.o" "FRT_Library\FreeRTOS\Source\list.o" "FRT_Library\FreeRTOS\Source\queue.o" "FRT_Library\FreeRTOS\Source\tasks.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.o" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.o" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.o" "include\button.o" "include\keypad.o" "include\rgb.o" "include\rtc.o" "include\uart0.o" "tasks\button_task.o" "tasks\keypad_task.o" "tasks\rtc_task.o" 
+	-$(RM) "main.d" "startup_frt.d" "systick_frt.d" "FRT_Library\FreeRTOS\Source\croutine.d" "FRT_Library\FreeRTOS\Source\list.d" "FRT_Library\FreeRTOS\Source\queue.d" "FRT_Library\FreeRTOS\Source\tasks.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\common.d" "FRT_Library\FreeRTOS\Source\portable\GCC\ARM_CM4\port.d" "FRT_Library\FreeRTOS\Source\portable\MemMang\heap_2.d" "include\button.d" "include\keypad.d" "include\rgb.d" "include\rtc.d" "include\uart0.d" "tasks\button_task.d" "tasks\keypad_task.d" "tasks\rtc_task.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
