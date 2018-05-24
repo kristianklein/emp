@@ -29,7 +29,7 @@ void file_init(void)
 	return;
 }
 
-BOOLEAN file_put(FILE file, INT8U character)
+BOOLEAN file_put(EMP_FILE file, INT8U character)
 {
 	BOOLEAN result = 0;
 	
@@ -41,7 +41,7 @@ BOOLEAN file_put(FILE file, INT8U character)
 	return result;
 }
 
-BOOLEAN file_get(FILE file, INT8U* character)
+BOOLEAN file_get(EMP_FILE file, INT8U* character)
 {
 	BOOLEAN result = 0;
 	

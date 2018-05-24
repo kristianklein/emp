@@ -64,7 +64,7 @@
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.OUTPUT_FILE.1606901705" name="Output file (-o)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.OUTPUT_FILE" useByScannerDiscovery="false" value="${ProjName}.out" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.MAP_FILE.1082775241" name="Write a map file (-Map)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.MAP_FILE" useByScannerDiscovery="false" value="${ProjName}.map" valueType="string"/>
 								<option id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.LIBRARY.67393633" name="Libraries (-l, --library)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.LIBRARY" useByScannerDiscovery="false"/>
-								<option id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.ENTRY.920498840" name="Set start address (-e, --entry)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.ENTRY" value="" valueType="string"/>
+								<option id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.ENTRY.920498840" name="Set start address (-e, --entry)" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.linkerID.ENTRY" value="ResetISR" valueType="string"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exeLinker.inputType__CMD_SRCS.1589225663" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exeLinker.inputType__CMD_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exeLinker.inputType__CMD2_SRCS.1248105534" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exeLinker.inputType__CMD2_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exeLinker.inputType__GEN_CMDS.395230940" name="Generated Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exeLinker.inputType__GEN_CMDS"/>
@@ -159,5 +159,19 @@
 		</project-mappings>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-	<storageModule moduleId="scannerConfiguration"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887;com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887.;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exe.compilerDebug.410198972;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.compiler.inputType__CPP_SRCS.1352273572">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.ti.ccstudio.project.core.CCSScannerDiscoveryProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887;com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887.;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exe.compilerDebug.410198972;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.compiler.inputType__C_SRCS.1684409218">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.ti.ccstudio.project.core.CCSScannerDiscoveryProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887;com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887.;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exe.compilerDebug.410198972;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.compiler.inputType__ASM_SRCS.288867928">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.ti.ccstudio.project.core.CCSScannerDiscoveryProfile"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887;com.ti.ccstudio.buildDefinitions.TMS470.Debug.568296887.;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.exe.compilerDebug.410198972;com.ti.ccstudio.buildDefinitions.TMS470_GNU_7.0.compiler.inputType__ASM2_SRCS.1157547983">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.ti.ccstudio.project.core.CCSScannerDiscoveryProfile"/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

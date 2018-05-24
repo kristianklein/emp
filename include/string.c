@@ -8,7 +8,7 @@ enum {LEFT, RIGHT}; // Added
 enum {NEGATIVE, POSITIVE}; // Added
 
 void putc1( fp, ch )
-FILE *fp;
+EMP_FILE *fp;
 unsigned char ch;
 {
   if( *fp < 0x20000000 )           // It is a file
@@ -25,7 +25,7 @@ unsigned char ch;
 
 
 void putStr( fp, str )
-FILE *fp;
+EMP_FILE *fp;
 char *str;
 {
   while( *str )
@@ -35,7 +35,7 @@ char *str;
 }
 
 void putChars( fp, Str, Len )
-FILE *fp;
+EMP_FILE *fp;
 char *Str;
 int Len;
 {
@@ -44,7 +44,7 @@ int Len;
 }
 
 void putDec( fp, Val, Sign, Size, Filler )
-FILE *fp;
+EMP_FILE *fp;
 long Val;
 int  Sign;
 int  Size;
@@ -106,7 +106,7 @@ char Filler;
 }
 
 void putHex( fp, Val, Size )
-FILE *fp;
+EMP_FILE *fp;
 long Val;
 int  Size;
 {
@@ -135,7 +135,7 @@ int  Size;
   }
 }
 
-const void gprint( FILE *fp, const char *Str, va_list vaArgP ) //...)
+const void gprint( EMP_FILE *fp, const char *Str, va_list vaArgP ) //...)
 {
   void *pParam;
   long Val;
@@ -260,7 +260,7 @@ const void gprint( FILE *fp, const char *Str, va_list vaArgP ) //...)
   //va_end(vaArgP);
 }
 
-const void gfprintf( FILE fp, const char *Str, ...)
+const void gfprintf( EMP_FILE fp, const char *Str, ...)
 {
   va_list vaArgP;
 
@@ -272,7 +272,7 @@ const void gfprintf( FILE fp, const char *Str, ...)
 const void gprintf( const char *Str, ...)
 {
   va_list vaArgP;
-  FILE std = 0;
+  EMP_FILE std = 0;
 
   va_start(vaArgP, Str);
   gprint( &std, Str, vaArgP );

@@ -1,3 +1,2 @@
-# emp
-# kommentar her
-# KOMMENTAR KUN I KEYPAD!
+# Embedded system for a gas station
+Final project for an embedded programming class. 
