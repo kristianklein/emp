@@ -45,7 +45,7 @@ INT8U log_capacity()
 
 INT32U log_get_cash_sum()
 {
-    INT32U sum = 0; // TODO: Change datatype to floating point number!
+    INT32U sum = 0;
 
     // Add up all purchases paid for with cash
     for (INT8U i = 0; i < capacity; i++)
