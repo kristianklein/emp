@@ -4,7 +4,7 @@ INT8U capacity = 0;
 
 LOG_T logs[MAX_LOGS];
 
-BOOLEAN log_put(INT8U hour, INT8U min, INT8U sec, GAS_T product, INT32U quantity, INT32U price, BOOLEAN paid_cash, INT32U account_num)
+BOOLEAN log_put(INT8U hour, INT8U min, INT8U sec, GAS_T product, INT32U quantity, INT32U price, BOOLEAN paid_cash, INT32U account_num, INT32U op_time)
 {
     BOOLEAN result = 0;
 
@@ -18,6 +18,7 @@ BOOLEAN log_put(INT8U hour, INT8U min, INT8U sec, GAS_T product, INT32U quantity
         logs[capacity].price = price;
         logs[capacity].paid_cash = paid_cash;
         logs[capacity].account_num = account_num;
+        logs[capacity].op_time = op_time;
 
         capacity++;
 
@@ -71,5 +72,17 @@ INT32U log_get_acc_sum()
         }
     }
 
+    return sum;
+}
+
+
+INT32U log_get_op_time()
+{
+    INT32U sum = 0;
+
+    for (INT8U i = 0; i < capacity; i++)
+    {
+        sum += logs[i].op_time;
+    }
     return sum;
 }
