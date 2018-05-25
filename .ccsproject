@@ -13,5 +13,6 @@
 	<createSlaveProjects value=""/>
 	<templateProperties value="id=com.ti.common.project.core.emptyProjectTemplate_gnu_arm,"/>
 	<filesToOpen value=""/>
+	<origin value="C:/ti/semesterprojekt"/>
 	<isTargetManual value="false"/>
 </projectOptions>
