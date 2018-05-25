@@ -8,13 +8,6 @@ typedef enum {
     RELEASED
 } BUTTON_STATE_T;
 
-typedef enum {
-    SW1_CLICKED,
-    SW1_RELEASED,
-    SW2_CLICKED,
-    SW2_RELEASED
-} BUTTON_EVENT_T;
-
 extern xQueueHandle xQueueButton;
 
 void button1_task(void *pvParameters){
@@ -97,5 +90,3 @@ void button2_task(void *pvParameters){
 
     return;
 }
-
-
