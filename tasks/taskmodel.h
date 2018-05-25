@@ -9,5 +9,5 @@
 #include "lcd_task.h"
 #include "digi_task.h"
 #include "comm_task.h"
-
+#include "sysblink.h"
 #endif
