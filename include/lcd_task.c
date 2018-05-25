@@ -27,24 +27,34 @@
 /***************************** Functions *************************************/
 void lcd_task(void *pvParameters)
 {
-lcd_init();
+    extern xQueueHandle xQueueLcd;
+    INT8U char_value;
 
-lcd_write('A');
-lcd_write('N');
-lcd_write('D');
-lcd_write('E');
-lcd_write('R');
-lcd_write('S');
+    lcd_init();
 
+    while(1)
+    {
+        xQueueReceive(xQueueLcd,(void *) &char_value, 5);
 
-while(1)
-{
-
-    GPIO_PORTF_DATA_R |= 0xE;
+        if(char_value == 0x0A)
+        {
+            //Make a new line
+        }
+        else if(char_value  == 0x00)
+        {
+            lcd_clear();
+        }
+        else
+        {
+            lcd_write(char_value);
+        }
+    }
+    return;
 }
 
-return;
-}
+
+
+
 
 
 

@@ -45,6 +45,7 @@
 /*****************************   Queue Declarations   *******************************/
 xQueueHandle xQueueKeypad;
 xQueueHandle xQueueButton;
+xQueueHandle xQueueLcd;
 
 
 /*****************************   Variables   *******************************/
@@ -93,13 +94,13 @@ int main(void)
 
   // Open the Q's.
   xQueueKeypad = xQueueCreate(KEYPAD_Q_SIZE,sizeof(INT8U));
-   xQueueButton = xQueueCreate(16, sizeof(INT8U));
-
+  xQueueButton = xQueueCreate(16, sizeof(INT8U));
+  xQueueLcd = xQueueCreate(16,sizeof(INT8U));
   // Start the tasks.
   // ----------------
-  xTaskCreate(button1_task, "Button1 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(button2_task, "Button2 task", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(keypad_task, "Keypad_task_name", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(button1_task, "Button1", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(button2_task, "Button2", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
 
