@@ -23,17 +23,8 @@ void rtc_task(void *pvParameters)
         rtc_increment_sec();
 
         // Toggle LED
-        //led_on ^= 1;
-        //rgb_set(led_on, 0, 0);
-
-
-        // DEBUGGING
-        INT32U fuel;
-        if (xQueueReceive(xQueueMillilitersFueled, &fuel, 0))
-        {
-            gfprintf(UART0, "Fueled: %06d\r\n", fuel);
-        }
-        // DEBUGGING
+        led_on ^= 1;
+        rgb_set(led_on, 0, 0);
 
         vTaskDelay((portTickType)TICKS_PER_SEC);
     }
