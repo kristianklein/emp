@@ -80,7 +80,7 @@ void comm_task(void *pvParameters)
                 state = IDLE;
                 break;
 
-            case GET_OP_TIME:
+            case GET_OP_TIME:;
                 //gprintf("Entered GET_OP_TIME state. Going back to IDLE. \r\n");
                 INT32U op_time_sum = log_get_op_time();
                 gfprintf(UART0, "Total operating time: %d\r\n", op_time_sum);

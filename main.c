@@ -106,10 +106,10 @@ int main(void)
   xQueueDigi_switch = xQueueCreate(128, sizeof(INT8U));
   // Start the tasks.
   // ----------------
-  xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  //xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button1_task, "Button1", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  //xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(digi_task, "Digitask", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_rx_task, "UART RX", USERTASK_STACK_SIZE, NULL, 1, NULL);
