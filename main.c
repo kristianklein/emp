@@ -32,10 +32,12 @@
 #include "uart0.h"
 #include "file.h"
 #include "flow.h"
+#include "semphr.h"
 
 
 /*****************************    Defines    *******************************/
-#define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
+//#define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
+#define USERTASK_STACK_SIZE 128
 #define IDLE_PRIO 0
 #define LOW_PRIO  1
 #define MED_PRIO  2
@@ -51,9 +53,14 @@ xQueueHandle xQueueButton;
 xQueueHandle xQueueUART_TX;
 xQueueHandle xQueueUART_RX;
 xQueueHandle xQueueLCD;
+xQueueHandle xQueueMaxMilliliters;
+xQueueHandle xQueueMillilitersFueled;
 
+/*****************************   Semaphore Declarations   *******************************/
+xSemaphoreHandle xSemaphorePumpActive;
 
 /*****************************   Variables   *******************************/
+
 
 /*****************************   Functions   *******************************/
 
@@ -86,7 +93,6 @@ static void setupHardware(void)
   init_systick();
 }
 
-
 int main(void)
 /*****************************************************************************
 *   Input    :
@@ -102,17 +108,23 @@ int main(void)
   xQueueUART_TX = xQueueCreate(128, sizeof(INT8U));
   xQueueUART_RX = xQueueCreate(128, sizeof(INT8U));
   xQueueLCD = xQueueCreate(128, sizeof(INT8U));
+  xQueueMaxMilliliters = xQueueCreate(1, sizeof(INT32U));
+  xQueueMillilitersFueled = xQueueCreate(1, sizeof(INT32U));
+
+  // Initialize semaphores
+  vSemaphoreCreateBinary(xSemaphorePumpActive);
+  xSemaphoreTake(xSemaphorePumpActive, 1); // Take semaphore, so it is initialized to zero
 
   // Start the tasks.
   // ----------------
   xTaskCreate(button1_task, "Button1", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  //xTaskCreate(lcd_task, "LCD task", 256, NULL, 1, NULL);
-  //xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  //xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_rx_task, "UART RX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_tx_task, "UART TX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(pump_task, "Pump", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
   // Start the scheduler.
   // --------------------

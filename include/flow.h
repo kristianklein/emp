@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "emp_type.h"
 
-#define PULSES_PER_100ML 225
+#define PULSES_PER_100ML 112.5
 
 void flow_init();
 void flow_reset();

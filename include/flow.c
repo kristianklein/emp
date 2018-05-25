@@ -6,7 +6,7 @@ BOOLEAN running = 0;
 BOOLEAN shunt = 0;
 INT32U pulses = 0;
 
-void flow_init()
+void flow_init() // TODO: Fix timer setup (currently running twice as fast as it should)
 {
     __asm("cpsid i"); // Disable global interrupts
     SYSCTL_RCGCTIMER_R = SYSCTL_RCGCTIMER_R | SYSCTL_RCGCTIMER_R0; // Enable clock for TIMER0
@@ -42,12 +42,37 @@ void flow_run_mode(BOOLEAN mode)
 {
     running = mode;
 
+    // Set red LED
+    if (mode)
+    {
+        // Turn on red LED (active low)
+        GPIO_PORTF_DATA_R &= ~(0b00001000);
+    }
+    else
+    {
+        // Turn off red LED (active low)
+        GPIO_PORTF_DATA_R |= 0b00001000;
+    }
+
+
     return;
 }
 
 void flow_shunt_mode(BOOLEAN mode)
 {
     shunt = mode;
+
+    // Set yellow LED
+    if (mode)
+    {
+        // Turn on yellow LED (active low)
+        GPIO_PORTF_DATA_R &= ~(0b00000100);
+    }
+    else
+    {
+        // Turn off yellow LED (active low)
+        GPIO_PORTF_DATA_R |= 0b00000100;
+    }
 
     return;
 }
