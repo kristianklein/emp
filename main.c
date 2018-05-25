@@ -81,6 +81,7 @@ static void setupHardware(void)
   file_init(); // Initialize files, to easily interact with UART0, LCD, Keypad and Buttons
   flow_init(); // Initialize flow meter (TIMER0A)
 
+  rgb_set(1,1,1); // Set RGB high (all EMP-kit LEDs off)
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
 }
@@ -108,10 +109,10 @@ int main(void)
   xTaskCreate(button2_task, "Button2", USERTASK_STACK_SIZE, NULL, 1, NULL);
   //xTaskCreate(lcd_task, "LCD task", 256, NULL, 1, NULL);
   //xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  //xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_rx_task, "UART RX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_tx_task, "UART TX", USERTASK_STACK_SIZE, NULL, 1, NULL);
-
+  xTaskCreate(pump_task, "Pump", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
   // Start the scheduler.
   // --------------------
