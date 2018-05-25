@@ -1,13 +1,10 @@
 #include "flow.h"
 #include "tm4c123gh6pm.h"
-#include <stdint.h>
-#include "emp_type.h"
 #include "rgb.h"
 
-BOOLEAN flow_running;
-BOOLEAN flow_shunt;
-
-
+BOOLEAN running = 0;
+BOOLEAN shunt = 0;
+INT32U pulses = 0;
 
 void flow_init()
 {
@@ -26,12 +23,60 @@ void flow_init()
     return;
 }
 
+void flow_reset()
+{
+    // Reset pump variables
+    running = 0;
+    shunt = 0;
+    pulses = 0;
+
+    return;
+}
+
+INT32U flow_get_pulses()
+{
+    return pulses;
+}
+
+void flow_run_mode(BOOLEAN mode)
+{
+    running = mode;
+
+    return;
+}
+
+void flow_shunt_mode(BOOLEAN mode)
+{
+    shunt = mode;
+
+    return;
+}
+
 void timer0a_isr()
 {
+    static pulse_prescale = 10;
+
     // Clear interrupt flag and reset timer value
     TIMER0_ICR_R = 0xFF;//0b00000001;
 
     // Do your thing
+
+    // Check if pump is running
+    if (running)
+    {
+        if (shunt)
+        {
+            if (!--pulse_prescale) // If shunt is on, use prescaler to only give a pulse every tenth interrupt
+            {
+                pulses++;
+                pulse_prescale = 10;
+            }
+        }
+        else // If shunt is off, give 1 pulse per interrupt
+        {
+            pulses++;
+        }
+    }
 
     return;
 }
