@@ -2,7 +2,7 @@
  * lcd_task.c
  *
  *  Created on: 24. maj 2018
- *      Author: Anders Sørensen
+ *      Author: Anders Sï¿½rensen
  */
 
 /***************************** Included files ********************************/
