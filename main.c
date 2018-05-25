@@ -50,6 +50,7 @@ xQueueHandle xQueueButton;
 xQueueHandle xQueueUART_TX;
 xQueueHandle xQueueUART_RX;
 xQueueHandle xQueueLCD;
+xQueueHandle xQueueDigi_switch;
 
 
 /*****************************   Variables   *******************************/
@@ -75,15 +76,11 @@ static void setupHardware(void)
 *****************************************************************************/
 {
   // TODO: Put hardware configuration and initialisation in here
-  rgb_init(); // Initialize RGB LED on the Tiva board
   uart0_init(9600, 8, 1, 0); // Initialize UART0
   file_init(); // Initialize files, to easily interact with UART0, LCD, Keypad and Buttons
+  rgb_init(); // Initialize RGB LED on the Tiva board
 
-     SYSCTL_RCGC2_R |= 0x20;
-     GPIO_PORTF_DIR_R = 0x0E;
-     GPIO_PORTF_DEN_R = 0x1E;
-     GPIO_PORTF_PUR_R = 0x10;
-     GPIO_PORTF_DATA_R &= ~0xE;
+
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
@@ -105,16 +102,17 @@ int main(void)
   xQueueUART_TX = xQueueCreate(128, sizeof(INT8U));
   xQueueUART_RX = xQueueCreate(128, sizeof(INT8U));
   xQueueLCD = xQueueCreate(128, sizeof(INT8U));
-
+  xQueueDigi_switch = xQueueCreate(128, sizeof(INT8U));
   // Start the tasks.
   // ----------------
+  xTaskCreate(uart_rx_task, "UART RX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(uart_tx_task, "UART TX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button1_task, "Button1", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(uart_rx_task, "UART RX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(uart_tx_task, "UART TX task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(digi_task, "Digitask", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
 
   // Start the scheduler.

@@ -13,10 +13,10 @@
 #include "lcd.h"
 #include "task.h"
 #include "queue.h"
+#include "rgb.h"
 
 /***************************** Defines ***************************************/
 #define WAIT_FOR_POWER_ON           3       //Important! if the time slice size is changed, then change this number
-
 
 
 /***************************** Constants *************************************/
@@ -29,7 +29,6 @@ void lcd_task(void *pvParameters)
 {
     extern xQueueHandle xQueueLCD;
     INT8U char_value;
-
     lcd_init();
 
     while(1)

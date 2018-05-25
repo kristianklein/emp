@@ -13,7 +13,7 @@
 #include "lcd.h"
 #include "task.h"
 #include "queue.h"
-
+#include "rgb.h"
 /***************************** Defines ***************************************/
 #define Q_FULL_TICKS_WAIT           5
 #define TASK_DELAY_TIME             5
@@ -157,26 +157,26 @@ void lcd_port_setup()
     SYSCTL_RCGC2_R |= 0x04;
 
     //Set the direction (0=input and 1=output)
-    GPIO_PORTC_DIR_R = 0xF0;        //LCD D4-D7 -> PORTC 4-7
+    GPIO_PORTC_DIR_R |= 0xF0;        //LCD D4-D7 -> PORTC 4-7
 
     //Enable the GPIO pins
-    GPIO_PORTC_DEN_R = 0xF0;
+    GPIO_PORTC_DEN_R |= 0xF0;
 
     //Enable internal pull-up for the high nibble
-    GPIO_PORTC_PUR_R = 0xF0;
+    GPIO_PORTC_PUR_R |= 0xF0;
 
 
     //Enable clock for port D
     SYSCTL_RCGC2_R |= 0x08;
 
     //Set the direction (0=input and 1=output)
-    GPIO_PORTD_DIR_R = 0x0C;        //LCD E -> PORTD
+    GPIO_PORTD_DIR_R |= 0x0C;        //LCD E -> PORTD 3
 
     //Enable the GPIO pins
-    GPIO_PORTD_DEN_R = 0x0C;        //LCD E -> PORTD
+    GPIO_PORTD_DEN_R |= 0x0C;        //LCD E -> PORTD 3
 
     //Enable internal pull-up for the high nibble
-    GPIO_PORTD_PUR_R = 0x0C;
+    GPIO_PORTD_PUR_R |= 0x0C;
 
     return;
 }

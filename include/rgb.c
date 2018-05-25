@@ -4,7 +4,7 @@
 void rgb_init(void)
 {
     // Setup RGB on Tiva
-    SYSCTL_RCGCGPIO_R |= SYSCTL_RCGCGPIO_R5; // Enable clock for PORTF
+    SYSCTL_RCGC2_R |= 0x20; // Enable clock for PORTF
     GPIO_PORTF_DIR_R |= 0b00001110; // Set RGB as output
     GPIO_PORTF_DEN_R |= 0b00001110; // Digital enable for RGB
     GPIO_PORTF_PUR_R &= ~(0b00001110); // Disable pull-up resistor

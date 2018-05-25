@@ -7,5 +7,6 @@
 #include "rtc_task.h"
 #include "uart_task.h"
 #include "lcd_task.h"
+#include "digi_task.h"
 
 #endif
