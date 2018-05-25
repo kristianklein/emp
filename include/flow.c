@@ -15,7 +15,7 @@ void flow_init() // TODO: Fix timer setup (currently running twice as fast as it
     TIMER0_TAMR_R = (TIMER_TAMR_TAMR_PERIOD); // Timer mode: Periodic, down-counting
     TIMER0_TAILR_R = 35556; // Interval load register (timer start value)
     TIMER0_IMR_R = TIMER_IMR_TATOIM; // Interrupt mask register: Timeout interrupt
-    TIMER0_TAPS_R = 2; // Prescaler
+    TIMER0_TAPR_R = 1; // Prescaler (When set to 1 it is logically a clock divisor of 2, so here it counts to 71112 clocks)
     NVIC_EN0_R = (1<<19); // Enable TIMER0A interrupt in NVIC
     TIMER0_CTL_R = TIMER_CTL_TAEN; // Enable TIMER0A
     __asm("cpsie i"); // Enable global interrupts

@@ -15,8 +15,8 @@ void rtc_task(void *pvParameters)
         rtc_increment_sec();
 
         // Toggle LED
-        led_on ^= 1;
-        rgb_set(led_on, 0, 0);
+        //led_on ^= 1;
+        //rgb_set(led_on, 0, 0);
 
         vTaskDelay((portTickType)TICKS_PER_SEC);
     }
