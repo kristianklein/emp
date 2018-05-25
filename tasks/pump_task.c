@@ -13,6 +13,7 @@ extern xQueueHandle xQueueButton;
 extern xQueueHandle xQueueMaxMilliliters;
 extern xQueueHandle xQueueMillilitersFueled;
 extern xSemaphoreHandle xSemaphorePumpActive;
+extern xSemaphoreHandle xSemaphoreFuelingDone;
 
 void pump_task(void *pvParameters)
 {
@@ -37,7 +38,7 @@ void pump_task(void *pvParameters)
                 {
                     if (received_value == SW2_CLICKED) // Trunk taken off handle
                     {
-                        if (xSemaphoreTake(xSemaphorePumpActive, 1) || 1==1) // Start pump if semaphore is available
+                        if (xSemaphoreTake(xSemaphorePumpActive, 1)) // Start pump if semaphore is available
                         {
                             flow_reset();
                             state = READY;
@@ -55,13 +56,12 @@ void pump_task(void *pvParameters)
                         flow_run_mode(0);
                         flow_shunt_mode(0);
 
-                        // Put number of milliliters tanked in queue
-                        INT32U milliliters_fueled = (flow_get_pulses() / PULSES_PER_100ML) * 100;
-                        xQueueSendToBack(xQueueMillilitersFueled, &milliliters_fueled, 10);
+                        // Signal FuelingDone semaphore
+                        xSemaphoreGive(xSemaphoreFuelingDone);
 
                         state = IDLE;
                     }
-                    if (received_value == SW1_CLICKED) // Started fueling
+                    if (received_value == SW1_CLICKED && (flow_get_pulses() < max_pulses || max_pulses == 0)) // Start fueling (if limit is not reached)
                     {
                         flow_shunt_mode(1);
                         flow_run_mode(1);
@@ -70,7 +70,11 @@ void pump_task(void *pvParameters)
                     }
                 }
                 break;
-            case SHUNT:
+            case SHUNT:;
+                // Send current millilitres to queue/buffer
+                INT32U millilitres_fueled = flow_get_milliliters();
+                xQueueSendToBack(xQueueMillilitersFueled, &millilitres_fueled, 0); // Do not block!
+
                 if (xQueueReceive(xQueueButton, &received_value, 10))
                 {
                     if (received_value == SW1_RELEASED) // Stopped fueling
@@ -88,6 +92,11 @@ void pump_task(void *pvParameters)
                     {
                         flow_run_mode(0);
                         flow_shunt_mode(0);
+
+                        // Send current millilitres to queue/buffer
+                        millilitres_fueled = flow_get_milliliters();
+                        xQueueSendToBack(xQueueMillilitersFueled, &millilitres_fueled, 9999); // Allowed to block - important info!
+
                         state = READY;
                     }
 
@@ -102,11 +111,21 @@ void pump_task(void *pvParameters)
                 }
                 break;
             case RUNNING:
+                // Send current millilitres to queue/buffer
+                millilitres_fueled = flow_get_milliliters();
+                xQueueSendToBack(xQueueMillilitersFueled, &millilitres_fueled, 0); // Do not block!
+
                 if (xQueueReceive(xQueueButton, &received_value, 10))
                 {
                     if (received_value == SW1_RELEASED) // Stopped fueling
                     {
                         flow_run_mode(0);
+
+                        // Send current millilitres to queue/buffer
+                        millilitres_fueled = flow_get_milliliters();
+                        xQueueSendToBack(xQueueMillilitersFueled, &millilitres_fueled, 9999); // Allowed to block - important info!
+
+
                         state = READY;
                     }
                 }

@@ -9,6 +9,7 @@
 void flow_init();
 void flow_reset();
 INT32U flow_get_pulses();
+INT32U flow_get_milliliters();
 void flow_run_mode(BOOLEAN mode);
 void flow_shunt_mode(BOOLEAN mode);
 void timer0a_isr();

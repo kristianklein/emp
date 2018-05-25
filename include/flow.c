@@ -38,6 +38,11 @@ INT32U flow_get_pulses()
     return pulses;
 }
 
+INT32U flow_get_milliliters()
+{
+    return (pulses * 100) / PULSES_PER_100ML;
+}
+
 void flow_run_mode(BOOLEAN mode)
 {
     running = mode;
@@ -79,7 +84,7 @@ void flow_shunt_mode(BOOLEAN mode)
 
 void timer0a_isr()
 {
-    static pulse_prescale = 10;
+    static INT8U pulse_prescale = 10;
 
     // Clear interrupt flag and reset timer value
     TIMER0_ICR_R = 0xFF;//0b00000001;

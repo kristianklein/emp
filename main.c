@@ -58,6 +58,7 @@ xQueueHandle xQueueMillilitersFueled;
 
 /*****************************   Semaphore Declarations   *******************************/
 xSemaphoreHandle xSemaphorePumpActive;
+xSemaphoreHandle xSemaphoreFuelingDone;
 
 /*****************************   Variables   *******************************/
 
@@ -115,6 +116,9 @@ int main(void)
   vSemaphoreCreateBinary(xSemaphorePumpActive);
   xSemaphoreTake(xSemaphorePumpActive, 1); // Take semaphore, so it is initialized to zero
 
+  vSemaphoreCreateBinary(xSemaphoreFuelingDone);
+  xSemaphoreTake(xSemaphoreFuelingDone, 1); // Take semaphore, so it is initialized to zero
+
   // Start the tasks.
   // ----------------
   xTaskCreate(button1_task, "Button1", USERTASK_STACK_SIZE, NULL, 1, NULL);
@@ -124,7 +128,7 @@ int main(void)
   xTaskCreate(uart_rx_task, "UART RX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_tx_task, "UART TX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(pump_task, "Pump", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(rtc_task, "RTC task", 128, NULL, 1, NULL);
 
   // Start the scheduler.
   // --------------------
