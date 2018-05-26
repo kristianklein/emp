@@ -18,6 +18,7 @@
 
 /***************************** Defines ***************************************/
 #define Q_FULL_TICKS_WAIT           1
+#define WAIT_10_MS                  2
 /***************************** Constants *************************************/
 /***************************** Variables *************************************/
 
@@ -42,7 +43,6 @@ void digi_task(void *pvParameters)
         {
             xQueueSendToBack(xQueueDigi_switch,(void*) &press, Q_FULL_TICKS_WAIT);
         }
-
     }
 
     return;

@@ -90,6 +90,26 @@ INT8U digi_press()
 {
     static INT8U digi_press_state = 0;
     INT8U event = 0;
+
+    switch(digi_press_state)
+    {
+
+    case 0:
+        if(!digiP2_read())                              //If the digi-switch is pressed down then change state
+        {
+            event = 3;
+            digi_press_state = 1;
+        }
+        break;
+    case 1:
+        if(digiP2_read())                               //Has the digi-switch been released again?
+        {
+            digi_press_state = 0;
+        }
+        break;
+    }
+
+    /*
     if(!digi_press_state)
     {
 
@@ -106,7 +126,7 @@ INT8U digi_press()
             digi_press_state = 0;
         }
     }
-
+*/
     return(event);
 
 }

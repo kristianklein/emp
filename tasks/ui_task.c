@@ -42,10 +42,16 @@ void ui_task(void *pvParameters)
     welcome_text();
     while (1)
     {
-        keypad_received = 0;
-        digi_received = 0;
-        xQueueReceive(xQueueKeypad, &keypad_received,0);
-        xQueueReceive(xQueueDigi_switch, &digi_received,0);
+//        keypad_received = 0;
+//        digi_received = 0;
+        if(!xQueueReceive(xQueueKeypad, &keypad_received,0))
+        {
+            keypad_received = 0;
+        }
+        if(!xQueueReceive(xQueueDigi_switch, &digi_received,0))
+        {
+            digi_received = 0;
+        }
 
         switch (state)
         {
@@ -223,7 +229,6 @@ void welcome_text()
     gfprintf(LCD, "Press any button");
 }
 
-
 void payment_text()
 {
     file_put(LCD, 0x00);
@@ -231,7 +236,6 @@ void payment_text()
     file_put(LCD, 0x0A);
     gfprintf(LCD, "Press 2: Account");
 }
-
 
 void cash_text()
 {
@@ -241,15 +245,12 @@ void cash_text()
     gfprintf(LCD, "0 kr.");
 }
 
-
-
 void account_text()
 {
     file_put(LCD, 0x00);
     gfprintf(LCD, " Account number");
     file_put(LCD, 0x0A);
 }
-
 
 void fuletype_text()
 {
