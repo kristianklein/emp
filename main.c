@@ -133,7 +133,7 @@ int main(void)
   xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_rx_task, "UART RX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_tx_task, "UART TX", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(pump_task, "Pump", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(pump_task, "Pump", MEDIUM_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(rtc_task, "RTC task", 128, NULL, 1, NULL);
 
   // Start the scheduler.

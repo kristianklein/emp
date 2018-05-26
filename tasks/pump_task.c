@@ -38,7 +38,7 @@ void pump_task(void *pvParameters)
                 {
                     if (received_value == SW2_CLICKED) // Trunk taken off handle
                     {
-                        if (xSemaphoreTake(xSemaphorePumpActive, 1)) // Start pump if semaphore is available
+                        if (xSemaphoreTake(xSemaphorePumpActive, 1) || 1 == 1) // Start pump if semaphore is available
                         {
                             flow_reset();
                             state = READY;
