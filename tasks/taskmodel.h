@@ -11,5 +11,6 @@
 #include "comm_task.h"
 #include "sysblink_task.h"
 #include "pump_task.h"
+#include "ui_task.h"
 
 #endif
