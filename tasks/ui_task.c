@@ -133,6 +133,7 @@ void ui_task(void *pvParameters)
                 }
                 else if(keypad_received == '*')
                 {
+                    fuletype = 0;
                     welcome_text();
                     state = WELCOME;
                 }
