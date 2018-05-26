@@ -2,6 +2,7 @@
 #include "queue.h"
 #include "log.h"
 #include "string.h"
+#include "price.h"
 
 extern xQueueHandle xQueueUART_RX;
 extern xQueueHandle xQueueUART_TX;
@@ -14,7 +15,11 @@ static void comm_print_log(LOG_T log);
 void comm_task(void *pvParameters)
 {
     static COMM_STATE_T state = IDLE;
+    static INT8U num_received = 0;
+    static INT16U new_price = 0;
+    static GAS_T fuel_type = GAS_92;
     INT8U received_value;
+
 
     while (1)
     {
@@ -22,11 +27,12 @@ void comm_task(void *pvParameters)
         {
             case IDLE:
                 // Wait for command from PC
-                if (xQueueReceive(xQueueUART_RX, &received_value, 10))
+                if (xQueueReceive(xQueueUART_RX, &received_value, 0))
                 {
                     switch (received_value)
                     {
                         case 'p':
+                            num_received = 0;
                             state = SET_PRICE;
                             break;
                         case 'l':
@@ -46,9 +52,66 @@ void comm_task(void *pvParameters)
                 break;
 
             case SET_PRICE:
-                gprintf("Entered SET_PRICE state. Going back to IDLE. \r\n");
+                gfprintf(UART0, "CHANGE GAS PRICE\r\nSelect fuel type: ");
 
-                // TODO: Make some way to set the product price. Should be in the petrol stand module?
+
+                // Expecting the following format: xPPPP
+                // where x = fuel type (0, 1 or 2) and PPPP is the price in cents
+
+                while (num_received < 5)
+                {
+                    if (xQueueReceive(xQueueUART_RX, &received_value, 0))
+                    {
+                        received_value -= 48; // Convert char to int
+
+                        switch (num_received++) // Increment num_received after switch evaluation
+                        {
+                            case 0: // Fuel type
+                                switch (received_value)
+                                {
+                                    case 0: // 92
+                                        fuel_type = GAS_92;
+                                        gfprintf(UART0, "\r\nEnter new price for 92 octane: ");
+                                        break;
+                                    case 1: // 95
+                                        fuel_type = GAS_95;
+                                        gfprintf(UART0, "\r\nEnter new price for 95 octane: ");
+                                        break;
+                                    case 2: // E10
+                                        fuel_type = GAS_E10;
+                                        gfprintf(UART0, "\r\nEnter new price for E10 bio-fuel: ");
+                                        break;
+                                    default: // default to 92
+                                        fuel_type = GAS_92;
+                                        gfprintf(UART0, "\r\nEnter new price for 92 octane: ");
+                                        break;
+                                }
+                                break;
+                            case 1: // Dollar tens
+                                new_price = received_value * 1000;
+                                gfprintf(UART0, "%01d", received_value);
+                                break;
+                            case 2: // Dollar ones
+                                new_price += received_value * 100;
+                                gfprintf(UART0, "%01d", received_value);
+                                break;
+                            case 3: // Cent tens
+                                new_price += received_value * 10;
+                                gfprintf(UART0, "%01d", received_value);
+                                break;
+                            case 4: // Cent ones
+                                new_price += received_value;
+                                gfprintf(UART0, "%01d\r\n", received_value);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+                // All values received! Update price and return to IDLE state
+                price_set(fuel_type, new_price);
+                gfprintf(UART0, "Price set to %02d.%02d per liter!\r\n", new_price/100, new_price%100);
 
                 /*
                 // Put test logs

@@ -10,4 +10,6 @@
 #include "digi_task.h"
 #include "comm_task.h"
 #include "sysblink.h"
+#include "pump_task.h"
+
 #endif

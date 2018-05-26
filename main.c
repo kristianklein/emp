@@ -31,11 +31,14 @@
 #include "rgb.h"
 #include "uart0.h"
 #include "file.h"
+#include "flow.h"
+#include "semphr.h"
 
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
-#define ALTERNATE_STACK_SIZE 512
+#define MEDIUM_STACK_SIZE 128
+#define LARGE_STACK_SIZE 256
 #define IDLE_PRIO 0
 #define LOW_PRIO  1
 #define MED_PRIO  2
@@ -52,9 +55,15 @@ xQueueHandle xQueueUART_TX;
 xQueueHandle xQueueUART_RX;
 xQueueHandle xQueueLCD;
 xQueueHandle xQueueDigi_switch;
+xQueueHandle xQueueMaxMilliliters;
+xQueueHandle xQueueMillilitersFueled;
 
+/*****************************   Semaphore Declarations   *******************************/
+xSemaphoreHandle xSemaphorePumpActive;
+xSemaphoreHandle xSemaphoreFuelingDone;
 
 /*****************************   Variables   *******************************/
+
 
 /*****************************   Functions   *******************************/
 
@@ -78,15 +87,15 @@ static void setupHardware(void)
 {
   // TODO: Put hardware configuration and initialisation in here
   uart0_init(9600, 8, 1, 0); // Initialize UART0
-  file_init(); // Initialize files, to easily interact with UART0, LCD, Keypad and Buttons
   rgb_init(); // Initialize RGB LED on the Tiva board
+  file_init(); // Initialize files, to easily interact with UART0, LCD, Keypad and Buttons
+  flow_init(); // Initialize flow meter (TIMER0A)
 
-
+  rgb_set(1,1,1); // Set RGB high (all EMP-kit LEDs off)
 
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
 }
-
 
 int main(void)
 /*****************************************************************************
@@ -104,20 +113,29 @@ int main(void)
   xQueueUART_RX = xQueueCreate(128, sizeof(INT8U));
   xQueueLCD = xQueueCreate(128, sizeof(INT8U));
   xQueueDigi_switch = xQueueCreate(128, sizeof(INT8U));
+  xQueueMaxMilliliters = xQueueCreate(1, sizeof(INT32U));
+  xQueueMillilitersFueled = xQueueCreate(1, sizeof(INT32U));
+
+  // Initialize semaphores
+  vSemaphoreCreateBinary(xSemaphorePumpActive);
+  xSemaphoreTake(xSemaphorePumpActive, 1); // Take semaphore, so it is initialized to zero
+
+  vSemaphoreCreateBinary(xSemaphoreFuelingDone);
+  xSemaphoreTake(xSemaphoreFuelingDone, 1); // Take semaphore, so it is initialized to zero
 
   // Start the tasks.
   // ----------------
-  xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button1_task, "Button1", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2", USERTASK_STACK_SIZE, NULL, 1, NULL);
-//  xTaskCreate(keypad_task, "Keypad", 256, NULL, 1, NULL);
-  xTaskCreate(rtc_task, "RTC task", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(digi_task, "Digitask", 128, NULL, 1, NULL);
+  xTaskCreate(digi_task, "Digitask", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(comm_task, "Comm", MEDIUM_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(lcd_task, "LCD task", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(keypad_task, "Keypad", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_rx_task, "UART RX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(uart_tx_task, "UART TX", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(comm_task, "Comm", 256, NULL, 1, NULL);
+  xTaskCreate(pump_task, "Pump", MEDIUM_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(rtc_task, "RTC task", 128, NULL, 1, NULL);
   xTaskCreate(sysblink, "Sysblink", USERTASK_STACK_SIZE, NULL, 1, NULL);
-
 
   // Start the scheduler.
   // --------------------
