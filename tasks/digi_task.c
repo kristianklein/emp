@@ -2,7 +2,7 @@
  * digi_task.c
  *
  *  Created on: 25. maj 2018
- *      Author: Anders Sørensen
+ *      Author: Anders Sï¿½rensen
  */
 /***************************** Included files ********************************/
 #include <stdint.h>
@@ -45,6 +45,8 @@ void digi_task(void *pvParameters)
         }
     }
 
+
+    while(1);
     return;
 }
 

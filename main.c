@@ -125,6 +125,7 @@ int main(void)
 
   // Start the tasks.
   // ----------------
+
   xTaskCreate(button1_task, "Button1", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(button2_task, "Button2", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(digi_task, "Digitask", USERTASK_STACK_SIZE, NULL, 1, NULL);
@@ -135,7 +136,7 @@ int main(void)
   xTaskCreate(uart_tx_task, "UART TX", USERTASK_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(pump_task, "Pump", MEDIUM_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(rtc_task, "RTC task", 128, NULL, 1, NULL);
-  xTaskCreate(sysblink, "Sysblink", USERTASK_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(sysblink_task, "Sysblink", USERTASK_STACK_SIZE, NULL, 1, NULL);
 
   // Start the scheduler.
   // --------------------
