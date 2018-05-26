@@ -25,6 +25,7 @@
 void digi_task(void *pvParameters)
 {
     digi_init();
+
     INT8U turn, press;
     extern xQueueHandle xQueueDigi_switch;
 
@@ -36,17 +37,14 @@ void digi_task(void *pvParameters)
         if(turn)
         {
             xQueueSendToBack(xQueueDigi_switch,(void*) &turn, Q_FULL_TICKS_WAIT);
-
         }
         if(press)
         {
             xQueueSendToBack(xQueueDigi_switch,(void*) &press, Q_FULL_TICKS_WAIT);
-
         }
+
     }
 
-
-    while(1);
     return;
 }
 

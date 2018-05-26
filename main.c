@@ -91,8 +91,6 @@ static void setupHardware(void)
   file_init(); // Initialize files, to easily interact with UART0, LCD, Keypad and Buttons
   flow_init(); // Initialize flow meter (TIMER0A)
 
-  rgb_set(1,1,1); // Set RGB high (all EMP-kit LEDs off)
-
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
 }
@@ -111,7 +109,7 @@ int main(void)
   xQueueButton = xQueueCreate(16, sizeof(INT8U));
   xQueueUART_TX = xQueueCreate(128, sizeof(INT8U));
   xQueueUART_RX = xQueueCreate(128, sizeof(INT8U));
-  xQueueLCD = xQueueCreate(128, sizeof(INT8U));
+  xQueueLCD = xQueueCreate(256, sizeof(INT8U));
   xQueueDigi_switch = xQueueCreate(128, sizeof(INT8U));
   xQueueMaxMilliliters = xQueueCreate(1, sizeof(INT32U));
   xQueueMillilitersFueled = xQueueCreate(1, sizeof(INT32U));
