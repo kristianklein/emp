@@ -4,13 +4,6 @@
 #include "rgb.h"
 
 
-// DEBUGGING
-#include "queue.h"
-#include "string.h"
-
-extern xQueueHandle xQueueMillilitersFueled;
-// DEBUGGING
-
 #define TICKS_PER_SEC 200
 
 void rtc_task(void *pvParameters)
@@ -25,6 +18,7 @@ void rtc_task(void *pvParameters)
         // Toggle LED
         led_on ^= 1;
         rgb_set(led_on, 0, 0);
+
 
         vTaskDelay((portTickType)TICKS_PER_SEC);
     }

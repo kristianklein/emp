@@ -34,28 +34,20 @@ void lcd_task(void *pvParameters)
     while(1)
     {
         if (xQueueReceive(xQueueLCD,(void *) &char_value, 5))
-				{
-					if(char_value == 0x0A)
-					{
-							//Make a new line
-					}
-					else if(char_value  == 0x00)
-					{
-							lcd_clear();
-					}
-					else
-					{
-							lcd_write(char_value);
-					}
-				}
+        {
+            if(char_value == 0x0A)
+            {
+                lcd_new_line();
+            }
+            else if(char_value  == 0x00)
+            {
+                lcd_clear();
+            }
+            else
+            {
+                lcd_print_char(char_value);
+            }
+        }
     }
     return;
 }
-
-
-
-
-
-
-
-
