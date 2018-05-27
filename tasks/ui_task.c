@@ -103,7 +103,7 @@ void ui_task(void *pvParameters)
                     file_put(LCD, 0x0A);
                     gfprintf(LCD, "%d kr",Cash_amount);
                 }
-                else if(digi_received == 3)
+                else if(keypad_received == '#')
                 {
                     fuletype_text();
                     state = FULETYPE;

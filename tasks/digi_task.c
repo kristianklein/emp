@@ -39,10 +39,12 @@ void digi_task(void *pvParameters)
         {
             xQueueSendToBack(xQueueDigi_switch,(void*) &turn, Q_FULL_TICKS_WAIT);
         }
+        /*
         if(press)
         {
             xQueueSendToBack(xQueueDigi_switch,(void*) &press, Q_FULL_TICKS_WAIT);
         }
+        */
     }
 
     return;
