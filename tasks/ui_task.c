@@ -131,12 +131,12 @@ void ui_task(void *pvParameters)
                 else if(keypad_received == '#' && account_length == ACCOUNT_SIZE)
                 {
                     file_put(LCD, 0x00);
-                    gfprintf(LCD, " Pin code");
+                    gfprintf(LCD, "Pin code");
                     file_put(LCD, 0x0A);
                     account_length = 0;
                     state = PIN;
                 }
-                else
+                else if(!(keypad_received == '#'))
                 {
                     if(account_length < ACCOUNT_SIZE)
                     {
