@@ -57,7 +57,7 @@ INT8U digi_turn()
     if(!(AB == AB_pre))
     {
         YY = AB ^ AB_pre;
-        if((AB & 0x2) == (AB & 0x1))
+        if((AB & 0x2) == ((AB & 0x1) << 1))
         {
             if(YY == 0x1)
             {
@@ -79,7 +79,6 @@ INT8U digi_turn()
                 event  = 1;
             }
         }
-
         AB_pre = AB;
     }
 
@@ -91,13 +90,32 @@ INT8U digi_press()
 {
     static INT8U digi_press_state = 0;
     INT8U event = 0;
+
+    switch(digi_press_state)
+    {
+
+    case 0:
+        if(!digiP2_read())                              //If the digi-switch is pressed down then change state
+        {
+            event = 3;
+            digi_press_state = 1;
+        }
+        break;
+    case 1:
+        if(digiP2_read())                               //Has the digi-switch been released again?
+        {
+            digi_press_state = 0;
+        }
+        break;
+    }
+
+    /*
     if(!digi_press_state)
     {
 
         if(!digiP2_read())
         {
-            rgb_set(1,0,0);
-            event = 1;
+            event = 3;
             digi_press_state = 1;
         }
     }
@@ -108,7 +126,7 @@ INT8U digi_press()
             digi_press_state = 0;
         }
     }
-
+*/
     return(event);
 
 }
@@ -136,11 +154,11 @@ INT8U AB_read()
 
     if(digiA_read())
     {
-        AB |= 0x2;
+        AB = 0x2;
     }
     if(digiB_read())
     {
-        AB |= 0x1;
+        AB = 0x1;
     }
 
     return(AB);

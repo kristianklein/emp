@@ -2,7 +2,7 @@
  * lcd_task.c
  *
  *  Created on: 24. maj 2018
- *      Author: Anders Sï¿½rensen
+ *      Author: Anders Sørensen
  */
 
 /***************************** Included files ********************************/
@@ -30,14 +30,16 @@ void lcd_task(void *pvParameters)
     extern xQueueHandle xQueueLCD;
     INT8U char_value;
     lcd_init();
+    lcd_clear();
 
     while(1)
     {
-        if (xQueueReceive(xQueueLCD,(void *) &char_value, 5))
+        if(xQueueReceive(xQueueLCD,(void *) &char_value, 5))
         {
+
             if(char_value == 0x0A)
             {
-                lcd_new_line();
+                lcd_newline();
             }
             else if(char_value  == 0x00)
             {
@@ -45,9 +47,18 @@ void lcd_task(void *pvParameters)
             }
             else
             {
-                lcd_print_char(char_value);
+                lcd_write(char_value);
             }
         }
     }
+
     return;
 }
+
+
+
+
+
+
+
+
