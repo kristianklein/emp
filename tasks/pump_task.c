@@ -48,7 +48,7 @@ void pump_task(void *pvParameters)
                     }
                 }
                 break;
-            case READY:
+            case READY: // TODO: If ready for more than 15 sec, cancel fueling
                 if (xQueueReceive(xQueueButton, &received_value, 10))
                 {
                     if (received_value == SW2_CLICKED) // Trunk put back on handle
