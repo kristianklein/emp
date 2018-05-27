@@ -242,7 +242,7 @@ void cash_text()
     file_put(LCD, 0x00);
     gfprintf(LCD, "Cash amount");
     file_put(LCD, 0x0A);
-    gfprintf(LCD, "0 kr.");
+    gfprintf(LCD, "0 kr");
 }
 
 void account_text()
