@@ -135,7 +135,7 @@ int main(void)
   xTaskCreate(pump_task, "Pump", MEDIUM_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(rtc_task, "RTC task", 128, NULL, 1, NULL);
   xTaskCreate(sysblink_task, "Sysblink", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(ui_task, "UI", MEDIUM_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(ui_task, "UI", LARGE_STACK_SIZE, NULL, 1, NULL);
 
   // Start the scheduler.
   // --------------------

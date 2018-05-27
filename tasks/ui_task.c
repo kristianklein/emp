@@ -13,7 +13,7 @@
 #include "file.h"
 
 /***************************** Defines ***************************************/
-#define ACCOUNT_SIZE            7
+#define ACCOUNT_SIZE            6
 #define PIN_SIZE                4
 
 /***************************** Typedefs **************************************/
@@ -255,9 +255,9 @@ void account_text()
 void fuletype_text()
 {
     file_put(LCD, 0x00);
-    gfprintf(LCD, "Choose fule type");
+    gfprintf(LCD, "Choose fuel type");
     file_put(LCD, 0x0A);
-    gfprintf(LCD, "1:E10 2:92 3:95");
+    gfprintf(LCD, "1:92 2:95 3:E10");
 }
 
 void pumpready_text()
