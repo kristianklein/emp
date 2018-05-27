@@ -48,6 +48,7 @@ void pumpready_text();
 void ui_print_fuel(INT32U milliliters);
 void ui_print_summary(INT32U milliliters, INT64U price);
 void ui_clear();
+INT32U account_array2int(INT8U *account_array);
 INT32U calc_max_milliliters(GAS_T fuel_type, INT16U cash_amount);
 
 /***************************** Functions *************************************/
@@ -311,7 +312,14 @@ void ui_task(void *pvParameters)
                 ui_print_summary(milliliters_fuelled, total_price);
 
                 // Save log of purchase
-                log_put(rtc_get_hour(), rtc_get_min(), rtc_get_sec(), GAS_92, milliliters_fuelled, total_price, 1, 0, 0);
+                if (paid_cash)
+                {
+                    log_put(rtc_get_hour(), rtc_get_min(), rtc_get_sec(), fuel_type, milliliters_fuelled, total_price, 1, 0, 0);
+                }
+                else
+                {
+                    log_put(rtc_get_hour(), rtc_get_min(), rtc_get_sec(), fuel_type, milliliters_fuelled, total_price, 0, account_array2int(account_number), 0);
+                }
 
                 vTaskDelay(200*5); // Delay 5 secs before returning to WELCOME
                 state = WELCOME;
@@ -343,7 +351,7 @@ void ui_print_summary(INT32U milliliters, INT64U price)
     file_put(LCD, 0x0A);
     gfprintf(LCD, "Price: %03d.", price/100);
     gfprintf(LCD, "%02d", price%100);
-    gfprintf(UART0, "%08d kr.", price);
+    //gfprintf(UART0, "%08d kr.\r\n", price);
 }
 
 void ui_clear()
