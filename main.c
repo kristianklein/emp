@@ -91,6 +91,7 @@ static void setupHardware(void)
   file_init(); // Initialize files, to easily interact with UART0, LCD, Keypad and Buttons
   flow_init(); // Initialize flow meter (TIMER0A)
 
+  rgb_set(1,1,1);
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
   init_systick();
 }
@@ -135,7 +136,7 @@ int main(void)
   xTaskCreate(pump_task, "Pump", MEDIUM_STACK_SIZE, NULL, 1, NULL);
   xTaskCreate(rtc_task, "RTC task", 128, NULL, 1, NULL);
   xTaskCreate(sysblink_task, "Sysblink", USERTASK_STACK_SIZE, NULL, 1, NULL);
-  xTaskCreate(ui_task, "UI", LARGE_STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(ui_task, "UI", 256, NULL, 1, NULL);
 
   // Start the scheduler.
   // --------------------

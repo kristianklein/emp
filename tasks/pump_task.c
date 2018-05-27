@@ -21,7 +21,7 @@ void pump_task(void *pvParameters)
     INT8U received_value;
     INT32U last_pulse;
     INT32U max_milliliters;
-    INT32U max_pulses = 1125; // This will be set to 0 if customer pays from account
+    INT32U max_pulses = 2250; // This will be set to 0 if customer pays from account
 
     while (1)
     {
@@ -39,7 +39,7 @@ void pump_task(void *pvParameters)
                     if (received_value == SW2_CLICKED) // Trunk taken off handle
                     {
                         // TODO: Remember to remove 1==1 below
-                        if (xSemaphoreTake(xSemaphorePumpActive, 1) || 1==1) // Start pump if semaphore is available
+                        if (xSemaphoreTake(xSemaphorePumpActive, 1)) // Start pump if semaphore is available
                         {
                             flow_reset();
                             state = READY;

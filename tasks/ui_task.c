@@ -14,8 +14,6 @@
 #include "price.h"
 #include "rtc.h"
 
-typedef enum {WELCOME, PAYMENT, CASH, ACCOUNT, PIN, PRODUCT, PUMP_READY, FUELING_DONE} UI_STATE_T;
-
 // Queue declarations
 extern xQueueHandle xQueueKeypad;
 extern xQueueHandle xQueueButton;
@@ -30,10 +28,6 @@ extern xQueueHandle xQueueMillilitersFueled;
 extern xSemaphoreHandle xSemaphorePumpActive;
 extern xSemaphoreHandle xSemaphoreFuelingDone;
 
-// Helper functions
-void ui_print_fuel(INT32U milliliters);
-void ui_print_summary(INT32U milliliters, INT64U price);
-void ui_clear();
 
 /***************************** Defines ***************************************/
 #define ACCOUNT_SIZE            6
@@ -51,18 +45,26 @@ void cash_text();
 void account_text();
 void fuletype_text();
 void pumpready_text();
+void ui_print_fuel(INT32U milliliters);
+void ui_print_summary(INT32U milliliters, INT64U price);
+void ui_clear();
+INT32U calc_max_milliliters(GAS_T fuel_type, INT16U cash_amount);
+
 /***************************** Functions *************************************/
 void ui_task(void *pvParameters)
 {
     UI_STATE_T state = WELCOME;
 
     INT32U milliliters_fuelled;
-    INT8U trash; // TODO: Remove when done debugging
+    INT32U max_milliliters;
+    INT32U trash;
     GAS_T fuel_type = GAS_92; // TODO: Change this when fuel selection is implemented
 
     INT8U keypad_received, digi_received, account_length = 0, pin_length = 0;
     INT16U Cash_amount = 0;
     INT8U account_number[ACCOUNT_SIZE], pin_number[PIN_SIZE];
+
+    BOOLEAN paid_cash = 0;
 
     welcome_text();
 		
@@ -95,11 +97,13 @@ void ui_task(void *pvParameters)
                 if(keypad_received == '1')
                 {
                     state =  CASH;
+                    paid_cash = 1;
                     cash_text();
                 }
                 else if (keypad_received == '2')
                 {
                     state =  ACCOUNT;
+                    paid_cash = 0;
                     account_text();
 
                 }
@@ -206,21 +210,70 @@ void ui_task(void *pvParameters)
             case FUELTYPE:
                 if(keypad_received == '1')
                 {
+                    /*
+                    // Calculate max fuel and push it to queue
+                    if (paid_cash)
+                    {
+                        max_milliliters = calc_max_milliliters(fuel_type, Cash_amount);
+                    }
+                    else
+                    {
+                        max_milliliters = 0;
+                    }
+                    xQueueReceive(xQueueMaxMilliliters, &trash, 0);
+                    xQueueSendToBack(xQueueMaxMilliliters, &max_milliliters, 0);
+                    */
+
                     pumpready_text();
                     fuel_type = GAS_92;
                     state = PUMP_READY;
+                    xSemaphoreGive(xSemaphorePumpActive);
+
                 }
                 else if(keypad_received == '2')
                 {
+                    /*
+                    // Calculate max fuel and push it to queue
+                    if (paid_cash)
+                    {
+                        max_milliliters = calc_max_milliliters(fuel_type, Cash_amount);
+                    }
+                    else
+                    {
+                        max_milliliters = 0;
+                    }
+                    xQueueReceive(xQueueMaxMilliliters, &trash, 0);
+                    xQueueSendToBack(xQueueMaxMilliliters, &max_milliliters, 0);
+                    */
+
                     pumpready_text();
                     fuel_type = GAS_95;
                     state = PUMP_READY;
+                    xSemaphoreGive(xSemaphorePumpActive);
+
                 }
                 else if(keypad_received == '3')
                 {
+                    /*
+                    // Calculate max fuel and push it to queue
+                    if (paid_cash)
+                    {
+                        max_milliliters = calc_max_milliliters(fuel_type, Cash_amount);
+                    }
+                    else
+                    {
+                        max_milliliters = 0;
+                    }
+                    xQueueReceive(xQueueMaxMilliliters, &trash, 0);
+                    xQueueSendToBack(xQueueMaxMilliliters, &max_milliliters, 0);
+                    */
+
                     pumpready_text();
                     fuel_type = GAS_E10;
                     state = PUMP_READY;
+                    xSemaphoreGive(xSemaphorePumpActive);
+
+
                 }
                 else if(keypad_received == '*')
                 {
@@ -248,6 +301,8 @@ void ui_task(void *pvParameters)
                 }
 
                 break;
+
+/*************************** Fueling done state ***********************************/
             case FUELING_DONE:;
                 // Calculate total price is cents
                 INT64U total_price = (price_get(fuel_type) * milliliters_fuelled)/1000;
@@ -261,7 +316,7 @@ void ui_task(void *pvParameters)
                 vTaskDelay(200*5); // Delay 5 secs before returning to WELCOME
                 state = WELCOME;
                 ui_clear();
-                gfprintf(LCD, "Welcome!");
+                welcome_text();
 
                 break;
 
@@ -284,11 +339,11 @@ void ui_print_fuel(INT32U milliliters)
 void ui_print_summary(INT32U milliliters, INT64U price)
 {
     ui_clear();
-    gfprintf(LCD, "Fuel: %02d.%03d", milliliters/1000, milliliters%1000);
+    gfprintf(LCD, "Fuel: %02d.%03dL", milliliters/1000, milliliters%1000);
     file_put(LCD, 0x0A);
     gfprintf(LCD, "Price: %03d.", price/100);
     gfprintf(LCD, "%02d", price%100);
-    gfprintf(UART0, "%08d", price);
+    gfprintf(UART0, "%08d kr.", price);
 }
 
 void ui_clear()
@@ -338,9 +393,50 @@ void fuletype_text()
 
 void pumpready_text()
 {
-    file_put(LCD, 0x00);
-    gfprintf(LCD, "Pump is ready");
+    ui_clear();
+    gfprintf(LCD, "Pump is ready!");
     file_put(LCD, 0x0A);
-    gfprintf(LCD, "Handle is on");
+    gfprintf(LCD, "Start fueling.");
 }
 
+INT32U account_array2int(INT8U *account_array)
+{
+    INT32U result = 0;
+    for (INT8U i = 0; i < ACCOUNT_SIZE; i++) // ACCOUNT_SIZE == 6
+    {
+        switch (i) // TODO: Make this nicer. Use i instead of switch statement
+        {
+            case 0:
+                result += account_array[i]*100000;
+                break;
+            case 1:
+                result += account_array[i]*10000;
+                break;
+            case 2:
+                result += account_array[i]*1000;
+                break;
+            case 3:
+                result += account_array[i]*100;
+                break;
+            case 4:
+                result += account_array[i]*10;
+                break;
+            case 5:
+                result += account_array[i];
+                break;
+            default:
+                break;
+        }
+    }
+    return result;
+}
+
+INT32U calc_max_milliliters(GAS_T fuel_type, INT16U cash_amount)
+{
+    INT32U max_ml = 0;
+
+    max_ml = ((FP32)cash_amount / (FP32)price_get(fuel_type))*100000;
+
+    return max_ml;
+
+}
