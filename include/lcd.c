@@ -1,160 +1,176 @@
-#include "lcd.h"
+/*
+ * lcd.c
+ *
+ *  Created on: 24. maj 2018
+ *      Author: Anders Sørensen
+ */
+
+/***************************** Included files ********************************/
+#include <stdint.h>
 #include "tm4c123gh6pm.h"
+#include "emp_type.h"
+#include "FreeRTOS.h"
+#include "lcd.h"
+#include "task.h"
+#include "queue.h"
+#include "rgb.h"
 
-#define CLOCK_FREQ_MHZ 16
-#define LCD_RS 0b00000100
-#define LCD_E 0b00001000
-#define LCD_DB4 0b00010000
-#define LCD_DB5 0b00100000
-#define LCD_DB6 0b01000000
-#define LCD_DB7 0b10000000
+/***************************** Defines ***************************************/
+#define Q_FULL_TICKS_WAIT           5
+#define TASK_DELAY_TIME             5
 
-void lcd_us_delay(INT16U usec)
+
+//LCD delay
+#define WAIT_FOR_LCD_READY          1       //Important! if the time slice is size changed, then change this number
+
+//PIN defines
+#define PIN_E                       0x08
+
+
+/***************************** Constants *************************************/
+/***************************** Variables *************************************/
+
+/***************************** Helper Functions decelerations ****************/
+void lcd_delay(INT32U delaytime);
+void flash_pin_E();
+void clear_lcd_data_pins();
+void lcd_port_setup();
+void lcd_write_4bit(INT8U value);
+/***************************** Functions *************************************/
+
+void lcd_init()
 {
-	for (INT32U i = 0; i < usec * CLOCK_FREQ_MHZ; i++);
-	
-	return;
+    // PC4-7: D4-7
+    // PD2: RS
+    //High nibble first
+
+
+    lcd_port_setup();                   //Initialize the ports
+    vTaskDelay(5);                      //Long startup delay
+    GPIO_PORTD_DATA_R &= ~(0x04);       //Chance the LCD-to command mode
+    lcd_delay(1000);                    //Small delay
+
+    //Set Interface data to 4 bit - start
+    lcd_write(0x30);                    //Send to 4 bit mode
+    vTaskDelay(1);                      //Wait min 5ms (change this one day)
+    lcd_write(0x30);                    //Set to 4 bit mode again.
+    lcd_delay(50000);                   //Wait 100uS minimum
+    lcd_write(0x32);                    // Send 4 bit index again to be sure
+    //Set Interface data to 4 bit - end
+
+    lcd_write(0x28);                    //Set Interface data to 4 bit, number of lines to 2 lines and fond to 5x8
+    lcd_write(0x01);                    //Clear the display
+    lcd_write(0x06);                    //Set the direction
+    lcd_write(0x0C);                    //Turn on the display
+    lcd_write(0x02);                    //Set the cursor home
+
+    //Make ready to write
+    GPIO_PORTD_DATA_R |= 0x04;          //Set RS to write
+    lcd_delay(1000);                    //Small delay
+    return;
 }
 
-void lcd_init(void)
-{
-  // Setup GPIO
-  // PC4-7: D4-7
-  // PD2: RS
-  // PD3: E
-  SYSCTL_RCGCGPIO_R |= (SYSCTL_RCGCGPIO_R2 | SYSCTL_RCGCGPIO_R3);
-  
-	// Data bus
-  GPIO_PORTC_DIR_R |= (LCD_DB4 | LCD_DB5 | LCD_DB6 | LCD_DB7);
-  GPIO_PORTC_DEN_R |= (LCD_DB4 | LCD_DB5 | LCD_DB6 | LCD_DB7);
-  GPIO_PORTC_PUR_R &= ~(LCD_DB4 | LCD_DB5 | LCD_DB6 | LCD_DB7);
-  
-	// RS and E
-  GPIO_PORTD_DIR_R |= (LCD_RS | LCD_E);
-  GPIO_PORTD_DEN_R |= (LCD_RS | LCD_E);
-  GPIO_PORTD_PUR_R &= ~(LCD_RS | LCD_E);
-  
-	// Initialize display
-	lcd_us_delay(40000);
-	
-	lcd_write_4bit(0x03, 1);
-	lcd_us_delay(10000);
-	
-	lcd_write_4bit(0x03, 1);
-	lcd_us_delay(200);
-	
-	lcd_write_4bit(0x03, 1);
-	lcd_us_delay(100);
-  
-	lcd_write_4bit(0x02, 1);
-	lcd_us_delay(100);
-	
-	lcd_write_8bit(0x28, 1);
-	lcd_us_delay(100);
-	
-	lcd_write_8bit(0x08, 1);
-	lcd_us_delay(100);
-	
-	lcd_write_8bit(0x0C, 1);
-	lcd_us_delay(100);
-	
-	lcd_write_8bit(0x06, 1);
-	lcd_us_delay(100);
-	
-	lcd_write_8bit(0x01, 1);
-	lcd_us_delay(100);
-	
-	return;
-}
 
-void lcd_write_4bit(INT8U value, BOOLEAN is_instruction)
+void lcd_write(INT8U char_value)
 {
-	value = (value & 0x0F) << 4; // Clear upper nibble and shift lower nibble up
-	
-	// Data bus
-	GPIO_PORTC_DATA_R &= ~(0xF0); // Clear data bus pins
-	GPIO_PORTC_DATA_R |= value; // Set data bus pins to value
-	
-	if (is_instruction) // If value is an instruction/command, set RS low
-	{
-		GPIO_PORTD_DATA_R &= ~(LCD_RS);
-	}
-	else
-	{
-		GPIO_PORTD_DATA_R |= LCD_RS;
-	}
-	
-	// Toggle E with appopriate delay to send data to LCD
-	GPIO_PORTD_DATA_R |= LCD_E;
-	lcd_us_delay(50);
-	GPIO_PORTD_DATA_R &= ~(LCD_E);
-	
-	return;
-}
+    INT8U temp = char_value & 0xF0;
 
-void lcd_write_8bit(INT8U value, BOOLEAN is_instruction)
-{
-    INT8U upper_nibble = (value & 0xF0) >> 4;
-	INT8U lower_nibble = (value & 0x0F);
-	
-	lcd_write_4bit(upper_nibble, is_instruction);
-	lcd_write_4bit(lower_nibble, is_instruction);
-}
+    clear_lcd_data_pins();
+    GPIO_PORTC_DATA_R |= temp;
+    flash_pin_E();
+    lcd_delay(500);                    //Delay the 150us to give the display time to save the data
 
-void lcd_clear(void)
-{
-	lcd_write_8bit(0x01, 1);
-	
-	return;
-}
+     temp = char_value << 4;            //Move low nibble to high
 
-void lcd_new_line(void)
-{
-    lcd_write_8bit(0xC0, 1);
+     clear_lcd_data_pins();
+     GPIO_PORTC_DATA_R |= temp;         //Set the 4-bit command
+     flash_pin_E();
+     lcd_delay(2400);                   //Delay the 150us to give the display time to save the data
 
     return;
 }
 
-void lcd_cursor_home(void)
+
+void lcd_newline()
 {
-	lcd_write_8bit(0x02, 1);
-  return;
+    clear_lcd_data_pins();
+    GPIO_PORTD_DATA_R &= ~(0x04);       //Chance the LCD-to command mode
+    lcd_delay(500);                    //Small delay
+    lcd_write(0xC0);
+    GPIO_PORTD_DATA_R |= 0x04;          //Set RS to write
+    lcd_delay(500);                    //Small delay
+    return;
 }
 
-void lcd_cursor_left(INT8U reps)
+void lcd_clear()
 {
-	lcd_write_8bit(0x10, 1);
-	
-	return;
+    GPIO_PORTD_DATA_R &= ~(0x04);      //Clear RS to make a command
+    lcd_delay(500);                   //Small delay
+    lcd_write(0x01);                   //Clears the display
+    GPIO_PORTD_DATA_R |= 0x04;         //set RS to send a data
+    lcd_delay(500);                   //Small delay
+    return;
 }
 
-void lcd_cursor_right(INT8U reps)
+
+void lcd_return_home()
 {
-	lcd_write_8bit(0x14, 1);
-	
-	return;
+    GPIO_PORTD_DATA_R &= ~(0x04);        //Clear RS to make a command
+    lcd_write(0x02);
+    GPIO_PORTD_DATA_R |= 0x04;         //set RS to send a data
+    return;
+
 }
 
-void lcd_print_char(INT8U character)
+
+/***************************** Helper definitions ****************************/
+
+void lcd_delay(INT32U delaytime)
 {
-	// Write to CG (character generation) or DD (display data) RAM
-	lcd_write_8bit(character, 0);
-	
-	return;
+    for(INT32U i = 0; i < delaytime; i++)
+    {
+
+    }
+    return;
 }
 
-void lcd_print_str(INT8U *string)
+void flash_pin_E()
 {
-	while (*string) // Always terminate strings with \0
-	{
-		lcd_print_char(*string);
-		string++; // Increment pointer address to next character in string
-	}
-	
-  return;
+    GPIO_PORTD_DATA_R |= PIN_E;          //Flash the E pin (Port D, 4)
+//    lcd_delay(1000);
+    GPIO_PORTD_DATA_R &= ~(PIN_E);
+    return;
 }
 
-INT8U lcd_int2char(INT8U value)
+void clear_lcd_data_pins()
 {
-    return value + 48;
+    GPIO_PORTC_DATA_R &= ~(0xF0);
+    return;
+}
+
+void lcd_port_setup()
+{
+    SYSCTL_RCGCGPIO_R |= (SYSCTL_RCGCGPIO_R2 | SYSCTL_RCGCGPIO_R3);   //Enable clock for port C and D
+
+    //Enable clock for port C and D
+//    SYSCTL_RCGC2_R |= (0x04 | 0x08);  //Enable clock for port C and D
+
+
+    GPIO_PORTC_DIR_R |= 0xF0;           //Set the direction (0=input and 1=output)
+    GPIO_PORTC_DEN_R |= 0xF0;           //Enable the GPIO pins
+    GPIO_PORTC_PUR_R |= 0xF0;           //Enable internal pull-up for the high nibble
+    GPIO_PORTD_DIR_R |= 0x0C;           //Set the direction (0=input and 1=output)
+    GPIO_PORTD_DEN_R |= 0x0C;           //Enable the GPIO pins
+    GPIO_PORTD_PUR_R |= 0x0C;           //Enable internal pull-up for the high nibble
+
+    return;
+}
+
+void lcd_write_4bit(INT8U value)
+{
+    value = ~(value & 0x0F) << 4;
+    clear_lcd_data_pins();
+    GPIO_PORTC_DATA_R |= value;
+    flash_pin_E();
+    return;
 }

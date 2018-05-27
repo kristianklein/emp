@@ -91,7 +91,7 @@ void ui_task(void *pvParameters)
                 {
                     Cash_amount = Cash_amount + 50;
                     file_put(LCD, 0x00);
-                    gfprintf(LCD, " Cash amount");
+                    gfprintf(LCD, "Cash amount");
                     file_put(LCD, 0x0A);
                     gfprintf(LCD, "%d kr", Cash_amount);
                 }
@@ -99,7 +99,7 @@ void ui_task(void *pvParameters)
                 {
                     Cash_amount = Cash_amount + 100;
                     file_put(LCD, 0x00);
-                    gfprintf(LCD, " Cash amount");
+                    gfprintf(LCD, "Cash amount");
                     file_put(LCD, 0x0A);
                     gfprintf(LCD, "%d kr",Cash_amount);
                 }
@@ -224,7 +224,7 @@ void ui_task(void *pvParameters)
 void welcome_text()
 {
     file_put(LCD, 0x00);
-    gfprintf(LCD, " Welcome");
+    gfprintf(LCD, "Welcome");
     file_put(LCD, 0x0A);
     gfprintf(LCD, "Press any button");
 }
@@ -232,7 +232,7 @@ void welcome_text()
 void payment_text()
 {
     file_put(LCD, 0x00);
-    gfprintf(LCD, " Press 1: Cash");
+    gfprintf(LCD, "Press 1: Cash");
     file_put(LCD, 0x0A);
     gfprintf(LCD, "Press 2: Account");
 }
@@ -240,7 +240,7 @@ void payment_text()
 void cash_text()
 {
     file_put(LCD, 0x00);
-    gfprintf(LCD, " Cash amount");
+    gfprintf(LCD, "Cash amount");
     file_put(LCD, 0x0A);
     gfprintf(LCD, "0 kr.");
 }
@@ -248,14 +248,14 @@ void cash_text()
 void account_text()
 {
     file_put(LCD, 0x00);
-    gfprintf(LCD, " Account number");
+    gfprintf(LCD, "Account number");
     file_put(LCD, 0x0A);
 }
 
 void fuletype_text()
 {
     file_put(LCD, 0x00);
-    gfprintf(LCD, " Choose fule type");
+    gfprintf(LCD, "Choose fule type");
     file_put(LCD, 0x0A);
     gfprintf(LCD, "1:E10 2:92 3:95");
 }
@@ -263,7 +263,7 @@ void fuletype_text()
 void pumpready_text()
 {
     file_put(LCD, 0x00);
-    gfprintf(LCD, " Pump is ready");
+    gfprintf(LCD, "Pump is ready");
     file_put(LCD, 0x0A);
     gfprintf(LCD, "Handle is on");
 }

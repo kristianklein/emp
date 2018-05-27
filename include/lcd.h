@@ -1,28 +1,58 @@
-#ifndef LCD_DISP_H
-#define LCD_DISP_H
+/*
+ * lcd.h
+ *
+ *  Created on: 24. maj 2018
+ *      Author: Anders Sørensen
+ */
 
-// RS = Register select (0 = instruction register, 1 = data register)
-// E = Enable (1 = starts data read/write)
-// RW = Tied to ground (always write)
-// DB4-7 = data bus pins (Send high bits first, then low bits!)
-// DB7 can be used as Busy Flag, but only when RW is 1 (thus not possible here)
+#ifndef LCD_H_
+#define LCD_H_
+
 
 #include <stdint.h>
 #include "emp_type.h"
 
-#define LCD_CLEAR 0x1B // ESC character
 
-void lcd_init(void);
-void lcd_write_4bit(INT8U value, BOOLEAN is_instruction);
-void lcd_write_8bit(INT8U value, BOOLEAN is_instruction);
-void lcd_clear(void);
-void lcd_new_line(void);
-void lcd_us_delay(INT16U usec);
-void lcd_cursor_home(void);
-void lcd_cursor_left(INT8U reps);
-void lcd_cursor_right(INT8U reps);
-void lcd_print_char(INT8U character);
-void lcd_print_str(INT8U string[]);
-INT8U lcd_int2char(INT8U value);
 
-#endif
+void lcd_init();
+/*****************************************************************************
+* Input : -
+* Output : -
+* Function : This function initialize the LCD-display
+******************************************************************************/
+
+void lcd_write(INT8U char_value);
+/*****************************************************************************
+* Input : The char value to be written
+* Output : -
+* Function : This function writes a char value on the display
+******************************************************************************/
+
+void lcd_newline();
+/*****************************************************************************
+* Input : -
+* Output : -
+* Function : This function changes the line on the display
+******************************************************************************/
+
+void lcd_clear();
+/*****************************************************************************
+* Input : -
+* Output : -
+* Function : This function clears the display
+******************************************************************************/
+
+void lcd_return_home();
+/*****************************************************************************
+* Input : -
+* Output : -
+* Function : This function sets the cursor to the first point.
+******************************************************************************/
+
+
+
+
+
+
+
+#endif /* LCD_H_ */
